@@ -1,0 +1,27 @@
+ /* body{
+	background-color: black;
+} */
+
+/* #sequencer{
+
+
+	
+	margin: 200px auto;
+} 
+ */
+
+ 
+ * {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+    }
+
+
+
+    #switch,
+    #tempo,
+    #audioPlayer {
+	height: 3rem;
+	width: 100%
+    }

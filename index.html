@@ -6,19 +6,143 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>magic-drum</title>
     <style> body {padding: 0; margin: 0;} </style>
-
+    <link rel="stylesheet" type="text/css" href="style.css">
 	<!-- this is the main p5 library -->
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.0/p5.js"></script>
 
-	<!-- this is the p5 sound library -->
-	<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.0/addons/p5.sound.min.js"></script> --> 
 
 
 	<!-- here's where we include the actual sketch file -->
-	<script src="script.js"></script>
+    <script src="https://unpkg.com/tone"></script>
+	
+<script src="https://cdn.jsdelivr.net/npm/tone@13.8.25/build/Tone.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@tonejs/ui@0.0.8/build/tonejs-ui.min.js"></script>
+
+<!-- 
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"
+integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@webcomponents/webcomponentsjs@^2/webcomponents-bundle.js"></script> -->
+
+
+
+	
   </head>
 
   <body>
+	
+
+
+ 
+    
+        <!-- <div class="row h-100">
+            <div class="col-8 h-100 ">
+
+                <tone-content>
+                    <tone-step-sequencer id="seq1"></tone-step-sequencer>
+
+                </tone-content>
+
+            </div>  -->
+
+     <!--       <div class="col-4 h-100">
+
+                <div class="row m-auto">
+                    <div id="radiobutton" class="d-flex col mt-5 mb-4 justify-content-center align-items-center">
+                        <h5 id="playState" class="mr-5">Play :</h5>
+                    </div>
+                </div>
+                <div class="row m-auto">
+                    <div id="dial" class="d-flex col mt-4 mb-4 justify-content-center align-items-center">
+                        <h5 id="bpmValue" class="mr-5">BPM : 128</h5>
+
+                    </div>
+                </div>
+             
+                </div>-->
+                </div> 
+
+
+                <div id="synth" style="position:relative;left:400px;top:100px"> 
+                    <div nexus-ui="sequencer" id="seq"></div>
+                    <div nexus-ui="button" id="s">Start</div>
+                  
+                    <div nexus-ui="button" id="p">Pause</div> 
+                   
+                  </div>
+
   </body>
+
+  
+<script src="NexusUI.js"></script>
+	
+<script src="script.js"></script>
+</html>
+
+
+<!--
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>Step Sequencer</title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">  --->
+    <!-- <script src="https://code.jquery.com/jquery-3.4.1.min.js"
+        integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/@webcomponents/webcomponentsjs@^2/webcomponents-bundle.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/tone@13.8.25/build/Tone.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@tonejs/ui@0.0.8/build/tonejs-ui.min.js"></script>
+
+    <link rel="stylesheet" type="text/css" href="style.css">
+  <script src="NexusUI.js"></script> 
+    <script src="script.js"></script> 
+</head>
+
+<body>
+    <div id="wrapper" class="container-fluid h-100">
+        <div class="row h-100">
+            <div class="col-8 h-100 ">
+
+                <tone-content>
+                    <tone-step-sequencer id="seq1"></tone-step-sequencer>
+                    <tone-step-sequencer id="seq2"></tone-step-sequencer>
+                    <tone-step-sequencer id="seq3"></tone-step-sequencer>
+                </tone-content>
+
+            </div>
+
+            <div class="col-4 h-100">
+
+                <div class="row m-auto">
+                    <div id="switch" class="d-flex col mt-5 mb-4 justify-content-center align-items-center">
+                        <h5 id="playState" class="mr-5">Play :</h5>
+                    </div>
+
+                </div>
+                <div class="row m-auto">
+                    <div id="tempo" class="d-flex col mt-4 mb-4 justify-content-center align-items-center">
+                        <h5 id="bpmValue" class="mr-5">BPM : 128</h5>
+
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col mt-4 mb-4 ">
+                        <div id="audioPlayer"
+                            class=" d-flex col mt-4 mb-4 justify-content-center align-items-center p-1 d-block">
+                            <audio controls class=""></audio>
+                            <button id="save" class=" ml-3 mr-auto btn btn-danger p-auto">Save</button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</body>
 
 </html>
