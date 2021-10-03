@@ -1,112 +1,37 @@
 <!DOCTYPE html>
-<html lang="">
-
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>magic-drum</title>
-    <style> body {padding: 0; margin: 0;} </style>
-    <link rel="stylesheet" type="text/css" href="style.css">
-	<!-- this is the main p5 library -->
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.0/p5.js"></script>
+<html >
+<head>
+  <meta charset="UTF-8">
+  <title>magic-drum</title>
+  <link rel="stylesheet" href="./style.css">
+</head>
+<body>
 
 
-
-	<!-- here's where we include the actual sketch file -->
-    <script src="https://unpkg.com/tone"></script>
-	
-<script src="https://cdn.jsdelivr.net/npm/tone@13.8.25/build/Tone.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@tonejs/ui@0.0.8/build/tonejs-ui.min.js"></script>
-
-<!-- 
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
-integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-<script src="https://code.jquery.com/jquery-3.4.1.min.js"
-integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
-<script src="https://unpkg.com/@webcomponents/webcomponentsjs@^2/webcomponents-bundle.js"></script> -->
-
-
-
-	
-  </head>
-
-  <body>
-	
-
-
- 
-    
-        <!-- <div class="row h-100">
-            <div class="col-8 h-100 ">
-
-                <tone-content>
-                    <tone-step-sequencer id="seq1"></tone-step-sequencer>
-
-                </tone-content>
-
-            </div>  -->
-
-     <!--       <div class="col-4 h-100">
-
-                <div class="row m-auto">
-                    <div id="radiobutton" class="d-flex col mt-5 mb-4 justify-content-center align-items-center">
-                        <h5 id="playState" class="mr-5">Play :</h5>
-                    </div>
-                </div>
-                <div class="row m-auto">
-                    <div id="dial" class="d-flex col mt-4 mb-4 justify-content-center align-items-center">
-                        <h5 id="bpmValue" class="mr-5">BPM : 128</h5>
-
-                    </div>
-                </div>
-             
-                </div>-->
-                </div> 
-
-
-                <div id="synth" style="position:relative;left:400px;top:100px"> 
-                    <div nexus-ui="sequencer" id="seq"></div>
-                    <div nexus-ui="button" id="s">Start</div>
-                  
-                    <div nexus-ui="button" id="p">Pause</div> 
-                   
-                  </div>
-
-  </body>
-
-  
-<script src="NexusUI.js"></script>
-	
-<script src="script.js"></script>
-</html>
-
-
-<!--
 <!DOCTYPE html>
 <html>
 
 <head>
     <meta charset="utf-8">
-    <title>Step Sequencer</title>
+    <title>magicDrum</title>
 
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
-        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">  --->
-    <!-- <script src="https://code.jquery.com/jquery-3.4.1.min.js"
-        integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
-    <script src="https://unpkg.com/@webcomponents/webcomponentsjs@^2/webcomponents-bundle.js"></script>
+    <meta name="viewport">
+
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous">
+        <script src="http://code.jquery.com/jquery-2.0.0.min.js"></script>
+    <!-- <script src="https://unpkg.com/@webcomponents/webcomponentsjs@^2/webcomponents-bundle.js"></script> -->
+
     <script src="https://cdn.jsdelivr.net/npm/tone@13.8.25/build/Tone.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@tonejs/ui@0.0.8/build/tonejs-ui.min.js"></script>
-
-    <link rel="stylesheet" type="text/css" href="style.css">
-  <script src="NexusUI.js"></script> 
-    <script src="script.js"></script> 
+    <!-- <script src="https://cdn.jsdelivr.net/npm/nexusui@2.0.10/dist/NexusUI.min.js"></script> -->
+    <script src="NexusUI.js"></script>
+ 
 </head>
 
 <body>
-    <div id="wrapper" class="container-fluid h-100">
-        <div class="row h-100">
-            <div class="col-8 h-100 ">
+    <div id="outside">
+        <div class="row">
+            <div class="seqContent ">
 
                 <tone-content>
                     <tone-step-sequencer id="seq1"></tone-step-sequencer>
@@ -119,30 +44,28 @@ integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="ano
             <div class="col-4 h-100">
 
                 <div class="row m-auto">
-                    <div id="switch" class="d-flex col mt-5 mb-4 justify-content-center align-items-center">
-                        <h5 id="playState" class="mr-5">Play :</h5>
-                    </div>
-
-                </div>
-                <div class="row m-auto">
-                    <div id="tempo" class="d-flex col mt-4 mb-4 justify-content-center align-items-center">
-                        <h5 id="bpmValue" class="mr-5">BPM : 128</h5>
-
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col mt-4 mb-4 ">
-                        <div id="audioPlayer"
-                            class=" d-flex col mt-4 mb-4 justify-content-center align-items-center p-1 d-block">
-                            <audio controls class=""></audio>
-                            <button id="save" class=" ml-3 mr-auto btn btn-danger p-auto">Save</button>
-                        </div>
+                    <div id="switch" class="d-flex col mt-5 mb-8 justify-content-center align-items-center">
+                        <h5 id="playState" class="ml-5" style="color: blue;font-weight: 600">Play :</h5>
                     </div>
                 </div>
 
+                
+                <div class="row m-auto" >
+                    <div id="tempo" class="d-flex col mt-5 mb-8 justify-content-center align-items-center">
+                        <h5 id="bpmValue" class="ml-5" style="color: blue;font-weight: 600">BPM : 128</h5>
+
+                    </div>
+                </div>
+         
             </div>
         </div>
     </div>
 </body>
 
+</html>
+
+<script src='https://cdnjs.cloudflare.com/ajax/libs/tone/14.3.4/Tone.js'></script>
+<script  src="./script.js"></script>
+
+</body>
 </html>

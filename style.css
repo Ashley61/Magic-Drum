@@ -1,27 +1,19 @@
- /* body{
-	background-color: black;
-} */
+* {
+    background-color: #b3dee2;
+            margin: 0;
+            padding: 0;
+         
+        }
 
-/* #sequencer{
+      
 
-
-	
-	margin: 200px auto;
-} 
- */
-
- 
- * {
-	margin: 0;
-	padding: 0;
-	box-sizing: border-box;
-    }
+        #switch,
+        #tempo,
+        /* #audioPlayer {
+            height: 3rem;
+            width: 100%
+        }
 
 
-
-    #switch,
-    #tempo,
-    #audioPlayer {
-	height: 3rem;
-	width: 100%
-    }
+        https://coolors.co/e27396-ea9ab2-efcfe3-eaf2d7-b3dee2
+         */

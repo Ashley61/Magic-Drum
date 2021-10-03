@@ -1,0 +1,22 @@
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+    }
+
+    #wrapper {
+
+	height: 90vh;
+	width: 80%;
+	border: 5px solid black;
+	border-radius: 20px;
+	margin: 10px auto;
+
+    }
+
+    #switch,
+    #tempo,
+    #audioPlayer {
+	height: 3rem;
+	width: 100%
+    }
