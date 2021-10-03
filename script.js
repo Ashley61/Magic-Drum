@@ -5,31 +5,32 @@ console.clear()
             'active': -1
         })
 
-        var dial = new Nexus.Dial('#tempo', {
-            'size': [70, 70],
-            'interaction': 'vertical',
-            'mode': 'absolute',
+
+        var slider = new Nexus.Slider('#tempo',{
+            'size': [120,20],
+            'mode': 'relative',  // 'relative' or 'absolute'
             'min': 70,
             'max': 250,
             'step': 1,
             'value': 128
         })
-
         
+        var noteNames1 = ["F#", "E", "C#", "A0"];
         var keys1 = new Tone.Players({
-            "A0": "https://res.cloudinary.com/degnified/video/upload/v1567497320/guitarC4_skynoz.[mp3|ogg]",
-            "C#": "https://res.cloudinary.com/degnified/video/upload/v1567497320/guitarC3_wg8daf.[mp3|ogg]",
-            "E": "https://res.cloudinary.com/degnified/video/upload/v1567497320/pianoC6_xppqwu.[mp3|ogg]",
-            "F#": "https://res.cloudinary.com/degnified/video/upload/v1567497319/pianoC4_ns8e2d.[mp3|ogg]",
+            "A0": "toolkit/kick.mp3",
+            "C#": "toolkit/hihat.mp3",
+            "E": "toolkit/snare.mp3",
+            "F#": "toolkit/tom1.mp3",
 
         }, {
             "volume": -10,
-            "fadeOut": "64n",
+    //        "fadeOut": "64n",
         })
         keys1.toMaster();
-        var noteNames1 = ["F#", "E", "C#", "A0"];
+        
         var loop1 = new Tone.Sequence(
             function (time, col) {
+              
                 var column = document.getElementById("seq1").currentColumn;
                 column.forEach(function (val, i) {
                     if (val) {
@@ -116,7 +117,7 @@ console.clear()
 
 
 
-        dial.on('change', function (v) {
+        slider.on('change', function (v) {
             Tone.Transport.bpm.value = v;
             $('#bpmValue').text('BPM : ' + v)
         })
