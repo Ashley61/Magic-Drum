@@ -1,3 +1,74 @@
+const improvCheckpoint = 'https://storage.googleapis.com/magentadata/js/checkpoints/music_rnn/chord_pitches_improv'
+const improvRNN = new mm.MusicRNN(improvCheckpoint)
+
+//small draft to try the drumRNN
+const { midi, Note } = Tonal  
+const synth = new Tone.Synth().toMaster()
+const sequence = {
+  ticksPerQuarter: 220,
+  totalTime: 58,
+  timeSignatures: [
+    {
+      time: 0,
+      numerator: 4,
+      denominator: 4
+    }
+  ],
+  tempos: [
+    {
+      time: 0,
+      qpm: 120
+    }
+  ],
+  notes: [
+    { pitch: midi('F4'), startTime: 0, endTime: 2},
+    { pitch: midi('Ab4'), startTime: 2, endTime: 4 },
+    { pitch: midi('C5'), startTime: 1, endTime: 3 },
+    { pitch: midi('Eb5'), startTime: 1.5, endTime: 4},
+    { pitch: midi('Gb5'), startTime: 2.5, endTime: 3.5 }
+
+  
+  ]
+}
+
+const quantizedSequence = mm.sequences.quantizeNoteSequence(sequence, 1)
+
+        var autoButton = new Nexus.RadioButton('#auto', {
+            'size': [70, 70],
+            'numberOfButtons': 1,
+            'active': -1
+        }) 
+        
+const startProgram = async () => {
+    try {
+        await improvRNN.initialize()
+        let improvisedMelody = await improvRNN.continueSequence(quantizedSequence, 60, 1.1, ['Bm', 'Bbm', 'Gb7', 'F7', 'Ab', 'Ab7', 'G7', 'Gb7', 'F7', 'Bb7', 'Eb7', 'AM7'])
+    
+        const playOriginalMelody = () => {
+          sequence.notes.forEach(note => {
+            synth.triggerAttackRelease(Note.fromMidi(note.pitch), note.endTime - note.startTime, note.startTime)
+          })
+        }
+    
+        const playGeneratedMelody = () => {
+          improvisedMelody.notes.forEach(note => {
+            synth.triggerAttackRelease(Note.fromMidi(note.pitch), note.quantizedEndStep - note.quantizedStartStep, note.quantizedStartStep)
+          })
+        }
+    
+     autoButton.on('change', function (v){
+         playOriginalMelody();
+        //   playGeneratedMelody();
+        })
+      } catch (error) {
+        console.error(error)
+      }
+}
+startProgram()
+
+
+
+
 console.clear()
         var radiobutton = new Nexus.RadioButton('#switch', {
             'size': [70, 70],
@@ -14,13 +85,13 @@ console.clear()
             'step': 1,
             'value': 128
         })
-        
-        var noteNames1 = ["F#", "E", "C#", "A0"];
+
+        var noteNames1 = ["C#3", "F#2", "A#2", "C2"];
         var keys1 = new Tone.Players({
-            "A0": "toolkit/kick.mp3",
-            "C#": "toolkit/hihat.mp3",
-            "E": "toolkit/snare.mp3",
-            "F#": "toolkit/tom1.mp3",
+            "C#3": "toolkit/clap.mp3",
+            "F#2": "toolkit/hihat-closed.mp3",
+            "A#2": "toolkit/hihat-open.mp3",
+            "C2": "toolkit/kick.mp3",
 
         }, {
             "volume": -10,
@@ -47,10 +118,10 @@ console.clear()
 
 
         var keys2 = new Tone.Players({
-            "A1": "https://res.cloudinary.com/degnified/video/upload/v1567497319/pianoC2_rxrywm.[mp3|ogg]",
-            "C#4": "https://res.cloudinary.com/degnified/video/upload/v1567497318/closedHiHat_pmmpvc.[mp3|ogg]",
-            "E2": "https://res.cloudinary.com/degnified/video/upload/v1567497320/openHiHat_w8hjym.[mp3|ogg]",
-            "F#2": "https://res.cloudinary.com/degnified/video/upload/v1567497320/tom_kqfs7i.[mp3|ogg]",
+            "A1": "toolKit/ride.mp3",
+            "C#4": "toolKit/snare.mp3",
+            "E2": "toolKit/tom-high.mp3",
+            "F#2": "toolKit/tom-low.mp3",
         }, {
             "volume": -10,
             "fadeOut": "64n",
@@ -77,10 +148,10 @@ console.clear()
 
 
         var keys3 = new Tone.Players({
-            "A2": "https://res.cloudinary.com/degnified/video/upload/v1567497319/snare_gpy8hu.[mp3|ogg]",
+            "F#3": "toolKit/tom-mid.mp3",
             "C#3": "https://res.cloudinary.com/degnified/video/upload/v1567497318/drum_o6byub.[mp3|ogg]",
             "E3": "https://res.cloudinary.com/degnified/video/upload/v1567497318/bass_snjpzv.[mp3|ogg]",
-            "F#3": "https://res.cloudinary.com/degnified/video/upload/v1567497317/kick_wew9fm.[mp3|ogg]",
+            "A2": "https://res.cloudinary.com/degnified/video/upload/v1567497317/kick_wew9fm.[mp3|ogg]",
         }, {
             "volume": -10,
             "fadeOut": "64n",
@@ -121,31 +192,7 @@ console.clear()
             Tone.Transport.bpm.value = v;
             $('#bpmValue').text('BPM : ' + v)
         })
-        //        $('#save').click(function () {
-        //     var audio = document.querySelector("audio")
-        //     var chunks = [];
-        //     var audioCtx = Tone.context;
-        //     var destination = audioCtx.createMediaStreamDestination();
-        //     var recorder = new MediaRecorder(destination.stream);
-        //     var canRecord = MediaRecorder.isTypeSupported("audio/webm\;codecs=opus")
-        //     console.log(canRecord)
-        //     keys1.connect(destination);
-        //     keys1.toMaster();
-        //     Tone.Transport.stop();
-        //     var now = Tone.now();
-        //     Tone.Transport.start(now);
-        //     recorder.start();
-        //     recorder.ondataavailable = evt => chunks.push(evt.data);
-        //     console.log(chunks)
-        //     recorder.stop()
-        //     recorder.onstop = evt => {
-        //         var blob = new Blob(chunks, {
-        //             'type': 'audio/ogg; codecs=opus'
-        //         });
-        //         console.log(blob)
-        //         audio.src = URL.createObjectURL(blob);
 
+       
 
-        //     };
-
-        // })
+        
