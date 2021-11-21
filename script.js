@@ -1,37 +1,144 @@
 const improvCheckpoint = 'https://storage.googleapis.com/magentadata/js/checkpoints/music_rnn/chord_pitches_improv'
-const improvRNN = new mm.MusicRNN(improvCheckpoint)
+ const improvRNN = new mm.MusicRNN(improvCheckpoint)
 
+
+
+/**
+ * perhaps:
+ * 1.midiDrums=[,,,]
+ * 2.temperature and patternLength
+ * 3.reverseMIDIMap??
+ * 4.fromNoteSequence()
+ * 5.toNoteSequence()
+ * 6.playPattern()
+ * 
+ */
+
+
+ const DRUM_CLASSES = [
+    'Kick',
+    'Snare',
+    'Hi-hat closed',
+    'Hi-hat open',
+    'Tom low',
+    'Tom mid',
+    'Tom high',
+    'Clap',
+    'Rim'];
+
+let midiDrums = [36, 38, 42, 46, 41, 43, 45, 49, 51];
+
+let reverseMidiMapping = new Map([
+    [36, 0],
+    [35, 0],
+    [38, 1],
+    [27, 1],
+    [28, 1],
+    [31, 1],
+    [32, 1],
+    [33, 1],
+    [34, 1],
+    [37, 1],
+    [39, 1],
+    [40, 1],
+    [56, 1],
+    [65, 1],
+    [66, 1],
+    [75, 1],
+    [85, 1],
+    [42, 2],
+    [44, 2],
+    [54, 2],
+    [68, 2],
+    [69, 2],
+    [70, 2],
+    [71, 2],
+    [73, 2],
+    [78, 2],
+    [80, 2],
+    [46, 3],
+    [67, 3],
+    [72, 3],
+    [74, 3],
+    [79, 3],
+    [81, 3],
+    [45, 4],
+    [29, 4],
+    [41, 4],
+    [61, 4],
+    [64, 4],
+    [84, 4],
+    [48, 5],
+    [47, 5],
+    [60, 5],
+    [63, 5],
+    [77, 5],
+    [86, 5],
+    [87, 5],
+    [50, 6],
+    [30, 6],
+    [43, 6],
+    [62, 6],
+    [76, 6],
+    [83, 6],
+    [49, 7],
+    [55, 7],
+    [57, 7],
+    [58, 7],
+    [51, 8],
+    [52, 8],
+    [53, 8],
+    [59, 8],
+    [82, 8]]);
+
+  
+    function getStepVelocity(step) {
+        if (step % 4 === 0) {
+          return 'high';
+        } else if (step % 2 === 0) {
+          return 'med';
+        } else {
+          return 'low';
+        }
+      }
+      
+      
 //small draft to try the drumRNN
 const { midi, Note } = Tonal  
 const synth = new Tone.Synth().toMaster()
 const sequence = {
-  ticksPerQuarter: 220,
-  totalTime: 58,
-  timeSignatures: [
-    {
-      time: 0,
-      numerator: 4,
-      denominator: 4
-    }
-  ],
-  tempos: [
-    {
-      time: 0,
-      qpm: 120
-    }
-  ],
+  // ticksPerQuarter: 220,
+  // totalTime: 58,
+  // timeSignatures: [
+  //   {
+  //     time: 0,
+  //     numerator: 4,
+  //     denominator: 4
+  //   }
+  // ],
+  // tempos: [
+  //   {
+  //     time: 0,
+  //     qpm: 120
+  //   }
+  // ],
   notes: [
-    { pitch: midi('F4'), startTime: 0, endTime: 2},
-    { pitch: midi('Ab4'), startTime: 2, endTime: 4 },
-    { pitch: midi('C5'), startTime: 1, endTime: 3 },
-    { pitch: midi('Eb5'), startTime: 1.5, endTime: 4},
-    { pitch: midi('Gb5'), startTime: 2.5, endTime: 3.5 }
-
+  //{ pitch: 74, startTime: 0, endTime: 1 }
+  { pitch: 36, quantizedStartStep: 0, quantizedEndStep: 1, isDrum: true },
+  { pitch: 38, quantizedStartStep: 0, quantizedEndStep: 1, isDrum: true },
+  { pitch: 42, quantizedStartStep: 0, quantizedEndStep: 1, isDrum: true },
+  { pitch: 46, quantizedStartStep: 0, quantizedEndStep: 1, isDrum: true },
+  { pitch: 42, quantizedStartStep: 2, quantizedEndStep: 3, isDrum: true },
+  { pitch: 42, quantizedStartStep: 3, quantizedEndStep: 4, isDrum: true },
+  { pitch: 42, quantizedStartStep: 4, quantizedEndStep: 5, isDrum: true },
   
-  ]
+  ],
+  quantizationInfo: {stepsPerQuarter: 4},
+  tempos: [{time: 0, qpm: 120}],
+  totalQuantizedSteps: 11
 }
 
-const quantizedSequence = mm.sequences.quantizeNoteSequence(sequence, 1)
+const quantizedSequence = mm.sequences.quantizeNoteSequence(sequence, 4);
 
         var autoButton = new Nexus.RadioButton('#auto', {
             'size': [70, 70],
@@ -64,6 +171,8 @@ const startProgram = async () => {
         console.error(error)
       }
 }
+
+
 startProgram()
 
 
@@ -99,6 +208,8 @@ console.clear()
         })
         keys1.toMaster();
         
+
+        
         var loop1 = new Tone.Sequence(
             function (time, col) {
               
@@ -107,8 +218,11 @@ console.clear()
                     if (val) {
                         var vel = 127;
                         keys1.get(noteNames1[i]).start(time, 0, "16n", 0, vel);
+                        //i: have clicked, need to store
                     }
                 });
+
+                //versiualize
                 Tone.Draw.schedule(function () {
                     document.getElementById("seq1").setAttribute("highlight",
                         col);
