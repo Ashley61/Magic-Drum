@@ -187,6 +187,7 @@ console.clear()
 	
 				notes_array[note_index] = {};
 				notes_array[note_index]["pitch"] = strToMidi[noteNames1[i]];
+        // TODO use i to caculate time?
 				notes_array[note_index]["startTime"] = i * 0.5;
 				notes_array[note_index]["endTime"] = (i+1) * 0.5;
 
@@ -202,6 +203,8 @@ console.clear()
             }, [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15], "16n").start(0);
    
 predictSeq.push(notes_array);
+
+
 
 
 
