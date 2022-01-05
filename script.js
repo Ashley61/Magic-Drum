@@ -1,5 +1,6 @@
 const improvCheckpoint = 'https://storage.googleapis.com/magentadata/js/checkpoints/music_rnn/basic_rnn';
- const improvRNN = new mm.MusicRNN(improvCheckpoint)
+const improvRNN = new mm.MusicRNN(improvCheckpoint)
+improvRNN.initialize();
 
  //improvRNN.initialize();
  // ​
@@ -15,8 +16,27 @@ const improvCheckpoint = 'https://storage.googleapis.com/magentadata/js/checkpoi
 }
 player = new mm.Player();
 var generateSequence;
-var predictSeq=[];
+var predictSeq={};
  var notes_array = [];
+ var notesStore=[];
+
+
+ TWINKLE_TWINKLE = {
+	notes: [
+	
+	  {pitch: 69, startTime: 0.0, endTime: 0.5, isDrum:true},
+	  {pitch: 72, startTime: 1.0, endTime: 1.5, isDrum:true},
+	  {pitch: 76, startTime: 2.0, endTime: 2.5, isDrum:true},
+	  {pitch: 66, startTime: 3.0, endTime: 3.5, isDrum:true},
+	
+	//   {pitch: 64, startTime: 5.0, endTime: 5.5, isDrum:true},
+	//   {pitch: 64, startTime: 5.5, endTime: 6.0, isDrum:true},
+	//   {pitch: 62, startTime: 6.0, endTime: 6.5, isDrum:true},
+	//   {pitch: 62, startTime: 6.5, endTime: 7.0, isDrum:true},
+	//   {pitch: 60, startTime: 7.0, endTime: 8.0, isDrum:true},  
+	],
+	totalTime: 8
+      };
 /**
  * perhaps:
  * 1.midiDrums=[,,,]
@@ -80,42 +100,42 @@ const sequence = {
         }) 
  
         
-const startProgram = async () => {
-    try {
-        await improvRNN.initialize()
-       // let improvisedMelody = await improvRNN.continueSequence(quantizedSequence, 60, 1.1, ['Bm', 'Bbm', 'Gb7', 'F7', 'Ab', 'Ab7', 'G7', 'Gb7', 'F7', 'Bb7', 'Eb7', 'AM7'])
+// const startProgram = async () => {
+//     try {
+//         await improvRNN.initialize()
+//        // let improvisedMelody = await improvRNN.continueSequence(quantizedSequence, 60, 1.1, ['Bm', 'Bbm', 'Gb7', 'F7', 'Ab', 'Ab7', 'G7', 'Gb7', 'F7', 'Bb7', 'Eb7', 'AM7'])
     
-        const playOriginalMelody = () => {
-          // sequence.notes.forEach(note => {
-          // //  Note.fromMidi(note.pitch)
-          //   synth.triggerAttackRelease(Note.fromMidi(note.pitch), note.endTime - note.startTime, note.startTime)
-          // })
-          player.start(sequence);
+//         const playOriginalMelody = () => {
+//           // sequence.notes.forEach(note => {
+//           // //  Note.fromMidi(note.pitch)
+//           //   synth.triggerAttackRelease(Note.fromMidi(note.pitch), note.endTime - note.startTime, note.startTime)
+//           // })
+//           player.start(sequence);
 
-        }
+//         }
     
-        const playGeneratedMelody = () => {
-          // improvisedMelody.notes.forEach(note => {
-          //   synth.triggerAttackRelease(Note.fromMidi(note.pitch), note.quantizedEndStep - note.quantizedStartStep, note.quantizedStartStep)
-          // })
-          const qns = mm.sequences.quantizeNoteSequence(sequence, 4);
- generateSequence= improvRNN
- .continueSequence(qns, 20, 1.5);
-  //         improvRNN
-  // .continueSequence(qns, 20, 1.5)
+//         const playGeneratedMelody = () => {
+//           // improvisedMelody.notes.forEach(note => {
+//           //   synth.triggerAttackRelease(Note.fromMidi(note.pitch), note.quantizedEndStep - note.quantizedStartStep, note.quantizedStartStep)
+//           // })
+//           const qns = mm.sequences.quantizeNoteSequence(sequence, 4);
+//  generateSequence= improvRNN
+//  .continueSequence(qns, 20, 1.5);
+//   //         improvRNN
+//   // .continueSequence(qns, 20, 1.5)
 
-  generateSequence
-  .then((sample) => rnnPlayer.start(sample));
-        }
+//   generateSequence
+//   .then((sample) => rnnPlayer.start(sample));
+//         }
     
-     autoButton.on('change', function (v){
-        // playOriginalMelody();
-           playGeneratedMelody();
-        })
-      } catch (error) {
-        console.error(error)
-      }
-}
+//     //  autoButton.on('change', function (v){
+//     //     // playOriginalMelody();
+//     //        playGeneratedMelody();
+//     //     })
+//       } catch (error) {
+//         console.error(error)
+//       }
+// }
 
 
 
@@ -139,7 +159,7 @@ const startProgram = async () => {
 // }
 
 
-startProgram()
+//startProgram()
 
 console.clear()
         var radiobutton = new Nexus.RadioButton('#switch', {
@@ -158,10 +178,10 @@ console.clear()
             'value': 128
         })
 
-        var noteNames1 = ["Eb1", "F#2", "Bb1", "C1"];
+        var noteNames1 = ["Eb1", "F#1", "Bb1", "C1"];
         var keys1 = new Tone.Players({
             "Eb1": "toolkit/clap.mp3",
-            "F#2": "toolkit/hihat-closed.mp3",
+            "F#1": "toolkit/hihat-closed.mp3",
             "Bb1": "toolkit/hihat-open.mp3",
             "C1": "toolkit/C4.mp3",
 
@@ -171,38 +191,134 @@ console.clear()
         })
         keys1.toMaster();
         
-
-        
+        var countTimeNum=0;
+        var note_index = 0; 
         var loop1 = new Tone.Sequence(
             function (time, col) {
-              	var note_index = 0;  
+                
+            
+              	 
                
                 var column = document.getElementById("seq1").currentColumn;
+
                 column.forEach(function (val, i) {
                     if (val) {
+                      
                         var vel = 127;
                         keys1.get(noteNames1[i]).start(time, 0, "16n", 0, vel);
+                        
+                        
                         //i: have clicked, need to store
                       
 	
 				notes_array[note_index] = {};
 				notes_array[note_index]["pitch"] = strToMidi[noteNames1[i]];
-        // TODO use i to caculate time?
-				notes_array[note_index]["startTime"] = i * 0.5;
-				notes_array[note_index]["endTime"] = (i+1) * 0.5;
-
+       
+        // TODO use i to caculate time? i is the row but we need column
+        if(col==0)
+        {
+        notes_array[note_index]["startTime"] =col*0.5;
+        notes_array[note_index]["endTime"] = col*0.5+0.5;  
+    }
+    else{
+				notes_array[note_index]["startTime"] = (col-1)*0.5;
+        
+				notes_array[note_index]["endTime"] = col*0.5;
+                ;}
+   notes_array[note_index]["isDrum"] = true
 				note_index = note_index + 1;
+      
                     }
+             
                 });
+
+                countTimeNum=countTimeNum+0.5;
+              
+                predictSeq["notes"]=notes_array;
+                predictSeq["totalTime"]=8;
+                
+     
+                    
+          
+    
 
                 //versiualize
                 Tone.Draw.schedule(function () {
                     document.getElementById("seq1").setAttribute("highlight",
                         col);
                 }, time);
+
+                
             }, [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15], "16n").start(0);
    
-predictSeq.push(notes_array);
+//
+
+            var test = new Nexus.RadioButton('#test', {
+              'size': [70, 70],
+              'numberOfButtons': 1,
+              'active': -1
+                })
+
+                var curNotes;
+                var continueSeq;
+                var temp;
+
+                //TODO: the predict function. maybe sth wrong with the predictSeq (time is wrong)
+                    autoButton.on('change', function (v) {
+                  if (v == 0) {
+                      
+                    document.write(predictSeq["notes"][7].pitch);
+                    document.write(predictSeq["notes"][7].startTime);
+                    document.write(predictSeq["notes"][7].endTime);
+                    document.write(predictSeq["notes"][7].isDrum);
+                     
+                   // document.write(predictSeq.notes[0].pitch); 
+                   //player.start(TWINKLE_TWINKLE);
+
+                //   const qns = mm.sequences.quantizeNoteSequence(predictSeq, 4);
+                //   continueSeq=improvRNN
+                //   .continueSequence(qns, 20, 1.5);
+                //  //continueSequence返回的到底是什么？
+                //   //sample是最后返回的sequence。怎样获取sample？
+                //   continueSeq.then((sample) => rnnPlayer.start(sample));
+                
+                //   //continueSeq.then((sample) =>document.write(sample.notes[0].pitch));
+                
+                // //    document.write(continueSeq);
+                //     continueSeq.then((sample)=> {
+                //   //   for(var t=0;t<sample.notes.length;t++){
+                    
+                //   //   } 
+                //   curNotes=sample;
+                // })
+                
+                } 
+                  else if (v == -1) {  
+                    rnnPlayer.stop();
+                  
+                  }
+                    })
+
+                    
+                test.on('change', function (v) {
+                  if (v == 0) {
+                  //	document.write(predictSeq.notes[0].pitch);
+                      var testPlayer=new mm.Player();
+                      var cur={};
+                  cur.notes=curNotes.notes;
+                     // cur.notes=curNotes.notes;
+                      cur.totalTime=8;
+                      for(var t=0;t<curNotes.notes.length;t++)
+                {
+                  cur.notes[t].isDrum=true;
+                }
+                      //document.write(cur.notes[0].isDrum);
+                      testPlayer.start(curNotes);
+                      //document.write(cur.notes[0].pitch)
+                  }})
+
+
+
 
 
 

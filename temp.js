@@ -132,6 +132,7 @@ var temp;
 	//	document.write(continueSeq);
       var testPlayer=new mm.Player();
       var cur={};
+	//cur.notes=predictSeq.notes;
       cur.notes=curNotes.notes;
       cur.totalTime=8;
       for(var t=0;t<curNotes.notes.length;t++)
