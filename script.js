@@ -21,22 +21,36 @@ var predictSeq={};
  var notesStore=[];
 
 
+
+
+//the example sequence-----------------------------------------------
  TWINKLE_TWINKLE = {
 	notes: [
 	
-	  {pitch: 69, startTime: 0.0, endTime: 0.5, isDrum:true},
-	  {pitch: 72, startTime: 1.0, endTime: 1.5, isDrum:true},
-	  {pitch: 76, startTime: 2.0, endTime: 2.5, isDrum:true},
-	  {pitch: 66, startTime: 3.0, endTime: 3.5, isDrum:true},
-	
-	//   {pitch: 64, startTime: 5.0, endTime: 5.5, isDrum:true},
-	//   {pitch: 64, startTime: 5.5, endTime: 6.0, isDrum:true},
-	//   {pitch: 62, startTime: 6.0, endTime: 6.5, isDrum:true},
-	//   {pitch: 62, startTime: 6.5, endTime: 7.0, isDrum:true},
-	//   {pitch: 60, startTime: 7.0, endTime: 8.0, isDrum:true},  
+        {pitch:66, startTime: 0.0, endTime: 0.5, isDrum:true},
+        {pitch: 69, startTime: 0.5, endTime: 1.0, isDrum:true},
+        {pitch: 72, startTime: 1.0, endTime: 1.5, isDrum:true},
+        {pitch: 76, startTime: 1.5, endTime: 2.0, isDrum:true},
+        {pitch: 81, startTime: 2.0, endTime: 2.5, isDrum:true},
+        {pitch: 68, startTime: 2.5, endTime: 3.0, isDrum:true},
+        {pitch: 75, startTime: 3.0, endTime: 4.0, isDrum:true},
+        {pitch: 80, startTime: 4.0, endTime: 4.5, isDrum:true},
+        {pitch: 78, startTime: 4.5, endTime: 5.0, isDrum:true},
+        {pitch: 64, startTime: 5.0, endTime: 5.5, isDrum:true},
+        {pitch: 64, startTime: 5.5, endTime: 6.0, isDrum:true},
+        {pitch: 62, startTime: 6.0, endTime: 6.5, isDrum:true},
+        {pitch: 62, startTime: 6.5, endTime: 7.0, isDrum:true},
+        {pitch: 60, startTime: 7.0, endTime: 8.0, isDrum:true},  
+  
 	],
 	totalTime: 8
       };
+     
+//-----------------------------------------------------------------
+
+
+
+
 /**
  * perhaps:
  * 1.midiDrums=[,,,]
@@ -168,6 +182,16 @@ console.clear()
             'active': -1
         })
 
+        var exampleButton = new Nexus.RadioButton('#examplePredict', {
+            'size': [70, 70],
+            'numberOfButtons': 1,
+            'active': -1
+        })
+        var select = new Nexus.Select('#example',{
+            'size': [250,40],
+            'options': ['Choose the example','TWINKLE_TWINKLE','MerryChristmas']
+          })
+
 
         var slider = new Nexus.Slider('#tempo',{
             'size': [120,20],
@@ -190,7 +214,10 @@ console.clear()
     //        "fadeOut": "64n",
         })
         keys1.toMaster();
+ 
         
+
+//record the melody------------------------------------------------------------------
         var countTimeNum=0;
         var note_index = 0; 
         var loop1 = new Tone.Sequence(
@@ -211,115 +238,37 @@ console.clear()
                         //i: have clicked, need to store
                       
 	
-				notes_array[note_index] = {};
-				notes_array[note_index]["pitch"] = strToMidi[noteNames1[i]];
+				// notes_array[note_index] = {};
+				// notes_array[note_index]["pitch"] = strToMidi[noteNames1[i]];
        
         // TODO use i to caculate time? i is the row but we need column
-        if(col==0)
-        {
-        notes_array[note_index]["startTime"] =col*0.5;
-        notes_array[note_index]["endTime"] = col*0.5+0.5;  
-    }
-    else{
-				notes_array[note_index]["startTime"] = (col-1)*0.5;
+//         if(col==0)
+//         {
+//         notes_array[note_index]["startTime"] =col*0.5;
+//         notes_array[note_index]["endTime"] = col*0.5+0.5;  
+//     }
+//     else{
+// 				notes_array[note_index]["startTime"] = (col-1)*0.5;
         
-				notes_array[note_index]["endTime"] = col*0.5;
-                ;}
-   notes_array[note_index]["isDrum"] = true
-				note_index = note_index + 1;
+// 				notes_array[note_index]["endTime"] = col*0.5;
+//                 ;}
+//    notes_array[note_index]["isDrum"] = true
+// 				note_index = note_index + 1;
       
                     }
              
                 });
-
-                countTimeNum=countTimeNum+0.5;
-              
-                predictSeq["notes"]=notes_array;
-                predictSeq["totalTime"]=8;
-                
-     
-                    
-          
-    
-
-                //versiualize
                 Tone.Draw.schedule(function () {
                     document.getElementById("seq1").setAttribute("highlight",
                         col);
                 }, time);
-
-                
             }, [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15], "16n").start(0);
-   
-//
 
-            var test = new Nexus.RadioButton('#test', {
-              'size': [70, 70],
-              'numberOfButtons': 1,
-              'active': -1
-                })
-
-                var curNotes;
-                var continueSeq;
-                var temp;
-
-                //TODO: the predict function. maybe sth wrong with the predictSeq (time is wrong)
-                    autoButton.on('change', function (v) {
-                  if (v == 0) {
-                      
-                    document.write(predictSeq["notes"][7].pitch);
-                    document.write(predictSeq["notes"][7].startTime);
-                    document.write(predictSeq["notes"][7].endTime);
-                    document.write(predictSeq["notes"][7].isDrum);
-                     
-                   // document.write(predictSeq.notes[0].pitch); 
-                   //player.start(TWINKLE_TWINKLE);
-
-                //   const qns = mm.sequences.quantizeNoteSequence(predictSeq, 4);
-                //   continueSeq=improvRNN
-                //   .continueSequence(qns, 20, 1.5);
-                //  //continueSequence返回的到底是什么？
-                //   //sample是最后返回的sequence。怎样获取sample？
-                //   continueSeq.then((sample) => rnnPlayer.start(sample));
-                
-                //   //continueSeq.then((sample) =>document.write(sample.notes[0].pitch));
-                
-                // //    document.write(continueSeq);
-                //     continueSeq.then((sample)=> {
-                //   //   for(var t=0;t<sample.notes.length;t++){
-                    
-                //   //   } 
-                //   curNotes=sample;
-                // })
-                
-                } 
-                  else if (v == -1) {  
-                    rnnPlayer.stop();
-                  
-                  }
-                    })
-
-                    
-                test.on('change', function (v) {
-                  if (v == 0) {
-                  //	document.write(predictSeq.notes[0].pitch);
-                      var testPlayer=new mm.Player();
-                      var cur={};
-                  cur.notes=curNotes.notes;
-                     // cur.notes=curNotes.notes;
-                      cur.totalTime=8;
-                      for(var t=0;t<curNotes.notes.length;t++)
-                {
-                  cur.notes[t].isDrum=true;
-                }
-                      //document.write(cur.notes[0].isDrum);
-                      testPlayer.start(curNotes);
-                      //document.write(cur.notes[0].pitch)
-                  }})
-
-
-
-
+                // countTimeNum=countTimeNum+0.5;
+              
+                // predictSeq["notes"]=notes_array;
+                // predictSeq["totalTime"]=8;
+ 
 
 
 
@@ -354,31 +303,153 @@ console.clear()
 
 
 
-        var keys3 = new Tone.Players({
-            "C2": "toolKit/tom-mid.mp3",
-            "C#3": "https://res.cloudinary.com/degnified/video/upload/v1567497318/drum_o6byub.[mp3|ogg]",
-            "E3": "https://res.cloudinary.com/degnified/video/upload/v1567497318/bass_snjpzv.[mp3|ogg]",
-            "A2": "https://res.cloudinary.com/degnified/video/upload/v1567497317/kick_wew9fm.[mp3|ogg]",
-        }, {
-            "volume": -10,
-            "fadeOut": "64n",
-        })
-        keys3.toMaster();;
-        var noteNames3 = ["F#3", "E3", "C#3", "A2"];
-        var loop3 = new Tone.Sequence(
-            function (time, col) {
-                var column = document.getElementById("seq3").currentColumn;
-                column.forEach(function (val, i) {
-                    if (val) {
-                        var vel = 127;
-                        keys3.get(noteNames3[i]).start(time, 0, "16n", 0, vel);
-                    }
-                });
-                Tone.Draw.schedule(function () {
-                    document.getElementById("seq3").setAttribute("highlight",
-                        col);
-                }, time);
-            }, [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15], "16n").start(0);
+        // var keys3 = new Tone.Players({
+        //     //some problems
+        //     "C2": "toolKit/tom-mid.mp3",
+        //     "C#3": "https://res.cloudinary.com/degnified/video/upload/v1567497318/drum_o6byub.[mp3|ogg]",
+        //     "E3": "toolKit/tom-mid.mp3",
+        //     "A2": "https://res.cloudinary.com/degnified/video/upload/v1567497317/kick_wew9fm.[mp3|ogg]",
+
+    
+        // }, {
+        //     "volume": -8,
+        //     "fadeOut": "64n",
+        // })
+        // keys3.toMaster();;
+        // var noteNames3 = ["F#3", "E3", "C#3", "A2"];
+        // var loop3 = new Tone.Sequence(
+        //     function (time, col) {
+        //         var column = document.getElementById("seq3").currentColumn;
+        //         column.forEach(function (val, i) {
+        //             if (val) {
+        //                 var vel = 127;
+        //                 keys3.get(noteNames3[i]).start(time, 0, "16n", 0, vel);
+        //             }
+        //         });
+        //         Tone.Draw.schedule(function () {
+        //             document.getElementById("seq3").setAttribute("highlight",
+        //                 col);
+        //         }, time);
+        //     }, [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15], "16n").start(0);               
+ //-----------------------------------------------------------------------------------------------    
+                    
+          
+    
+
+
+//predict the record melody-----------------------------------------------------------------
+            var test = new Nexus.RadioButton('#test', {
+              'size': [70, 70],
+              'numberOfButtons': 1,
+              'active': -1
+                })
+
+
+                var curNotes;
+                var continueSeq;
+                var temp;
+
+                //TODO: the predict function. maybe sth wrong with the predictSeq (time is wrong)
+                    autoButton.on('change', function (v) {
+                  if (v == 0) {
+                      
+                    document.write(predictSeq["notes"][7].pitch);
+                    document.write(predictSeq["notes"][7].startTime);
+                    document.write(predictSeq["notes"][7].endTime);
+                    document.write(predictSeq["notes"][7].isDrum);
+                     
+                   // document.write(predictSeq.notes[0].pitch); 
+                   //player.start(TWINKLE_TWINKLE);
+
+                  const qns = mm.sequences.quantizeNoteSequence(predictSeq, 4);
+                  continueSeq=improvRNN
+                  .continueSequence(qns, 20, 1.5);
+                 //continueSequence返回的到底是什么？
+                  //sample是最后返回的sequence。怎样获取sample？
+                  continueSeq.then((sample) => rnnPlayer.start(sample));
+                
+                  //continueSeq.then((sample) =>document.write(sample.notes[0].pitch));
+                
+                //    document.write(continueSeq);
+                    continueSeq.then((sample)=> {
+                  //   for(var t=0;t<sample.notes.length;t++){
+                    
+                  //   } 
+                  curNotes=sample;
+                })
+                
+                } 
+                  else if (v == -1) {  
+                    rnnPlayer.stop();
+                  
+                  }
+                    })
+
+                    
+                test.on('change', function (v) {
+                  if (v == 0) {
+                  //	document.write(predictSeq.notes[0].pitch);
+                      var testPlayer=new mm.Player();
+                      var cur={};
+                  cur.notes=curNotes.notes;
+                     // cur.notes=curNotes.notes;
+                      cur.totalTime=8;
+                      for(var t=0;t<curNotes.notes.length;t++)
+                {
+                  cur.notes[t].isDrum=true;
+                }
+                      //document.write(cur.notes[0].isDrum);
+                      testPlayer.start(curNotes);
+                      //document.write(cur.notes[0].pitch)
+                  }})
+
+//---------------------------------------------------------------------------
+
+/**
+ * 
+ * test the model is ok. The test sequence is the given example------------------------------------------------------
+ */
+                var example=TWINKLE_TWINKLE;
+                select.on('change',function(v) {
+                    if(v.value=="TWINKLE_TWINKLE"){player.start(TWINKLE_TWINKLE);example=TWINKLE_TWINKLE};
+                           
+                  })
+                     
+                  var curNotesEg;
+                  var continueSeqEg;
+                  var cur={};
+                      exampleButton.on('change', function (v) {
+                      if (v == 0) {
+                  
+                    const qns = mm.sequences.quantizeNoteSequence(example, 4);
+                    continueSeqEg=improvRNN
+                    .continueSequence(qns, 20, 1.5);
+            
+                    
+                
+                      continueSeqEg.then((sample)=> { 
+                      curNotesEg=sample; 
+                      cur.notes=curNotesEg.notes;
+                      cur.totalTime=8;
+                      for(var t=0;t<curNotesEg.notes.length;t++)
+                {
+                    cur.notes[t].isDrum=true;
+                }
+                  })
+
+                  continueSeqEg.then((curNotesEg) => rnnPlayer.start(curNotesEg));
+                  } 
+                      else if (v == -1) {  
+                          player.stop();
+                      
+                      }
+                    
+                      })
+
+                      
+//------------------------------------------------------------------------------------------------------------
+
+
 
 
 

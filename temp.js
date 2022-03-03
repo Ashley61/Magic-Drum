@@ -97,7 +97,7 @@ var autoButton = new Nexus.RadioButton('#auto', {
     })
 var curNotes;
 var continueSeq;
-var temp;
+
     autoButton.on('change', function (v) {
 	if (v == 0) {
 //	player.start(TWINKLE_TWINKLE);
