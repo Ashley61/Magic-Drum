@@ -1,3 +1,4 @@
+
 const improvCheckpoint = 'https://storage.googleapis.com/magentadata/js/checkpoints/music_rnn/basic_rnn';
 const improvRNN = new mm.MusicRNN(improvCheckpoint)
 improvRNN.initialize();
@@ -20,7 +21,7 @@ var predictSeq={};
  var notes_array = [];
  var notesStore=[];
 
-
+   const activeSynths = {};
 
 
 //the example sequence-----------------------------------------------
@@ -90,6 +91,7 @@ var predictSeq={};
 // //small draft to try the drumRNN
 // const { midi, Note } = Tonal  
 // const synth = new Tone.Synth().toMaster()
+
 const sequence = {
  
   notes: [
@@ -216,7 +218,67 @@ console.clear()
         keys1.toMaster();
  
         
+        var lowNote=72;
+        var highNote=84;
 
+        var piano = new Nexus.Piano('#pinao',{
+            'size': [800,285],
+            'mode': 'button',  // 'button', 'toggle', or 'impulse'
+            'lowNote': lowNote,
+            'highNote': highNote
+        })
+
+        const keyMapper = {
+            a: 0,
+            w: 1,
+            s: 2,
+            e: 3,
+            d: 4,
+            f: 5,
+            t: 6,
+            g: 7,
+            y: 8,
+            h: 9,
+            u: 10,
+            j: 11,
+            k: 12,
+          }
+
+
+          document.addEventListener('keydown', (event) => {
+            const keyIndex = keyMapper[event.key];
+            keyIndex !== undefined && !piano.keys[keyIndex]._state.state ? 
+            piano.toggleIndex(keyIndex, true) : null;
+          });
+          
+          document.addEventListener('keyup', (event) => {
+            const keyIndex = keyMapper[event.key];
+            keyIndex !== undefined && piano.keys[keyIndex]._state.state ? 
+            piano.toggleIndex(keyIndex, false) : null;
+          });
+
+        //   const synth = new Tone.Synth().toMaster();
+
+        
+      //     const midi = new Midi()
+        
+
+        piano.on('change', (k) => {
+            if (k.state) {
+                
+               if (!(activeSynths[k.note] in activeSynths) ) {
+                 activeSynths[k.note] = new Tone.Synth().toMaster();
+          
+               }
+               activeSynths[k.note].volume.value=-10;
+             activeSynths[k.note].triggerAttack(piano_MIDI_MAP[k.note]);
+            } 
+            else {
+              activeSynths[k.note].triggerRelease();
+            }})
+
+
+            
 //record the melody------------------------------------------------------------------
         var countTimeNum=0;
         var note_index = 0; 
@@ -411,7 +473,11 @@ console.clear()
  */
                 var example=TWINKLE_TWINKLE;
                 select.on('change',function(v) {
-                    if(v.value=="TWINKLE_TWINKLE"){player.start(TWINKLE_TWINKLE);example=TWINKLE_TWINKLE};
+                    if(v.value=="TWINKLE_TWINKLE"){
+
+              
+                        player.start(TWINKLE_TWINKLE);example=TWINKLE_TWINKLE
+                    };
                            
                   })
                      
