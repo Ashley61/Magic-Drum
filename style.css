@@ -3,47 +3,48 @@
 
 .seqContent
 {
+     
     position: absolute;
     /* margin: 20px; */
     /* width: 1200px;
     height: 400px; */
-    left: 470px;
-top: 60px;
-align-items: center; 
+    left: 27%;
+    bottom: 0.2%;
+    align-items: center;  
 
 }
 
 
 #pinao{
 
-        position: absolute;
-       
-        left: 550px;
-    bottom: 120px;
-    align-items: center;  
+ position: absolute;
+
+
+    left:29%;
+    top: 22%;
+    align-items: center; 
 }
 
 #switch{
 position: absolute;
-       
-left: 150px;
-top: 160px;
+left:22%;
+bottom: 28%;
     
 }
 #tempo
 {
 position: absolute;
        
-left: 150px;
-top: 300px; 
+left: 22.5%;
+bottom:10%; 
 }
 
 #auto
 {
         position: absolute;
       
-        left: 150px;
-        top: 440px; 
+        left:22%;
+        top: 22%;
 
 }
 
@@ -51,12 +52,22 @@ top: 300px;
 {
         position: absolute;
       
-        left: 150px;
-        top: 580px;
+        left:22%;
+        top: 40%;
 
 
 }
+#clean{
+        position: absolute;
+        right:23%;
+        bottom: 28%; 
+}
 
+#seqVolume{
+        position: absolute;
+        right:23%;
+        bottom: 12%;  
+}
 
 #example
 {
@@ -74,6 +85,16 @@ top: 300px;
         right: 150px;
         top: 300px;      
 }
+
+
+#visual{
+        position: absolute;
+      
+right: 20%;
+        top: 70%;      
+}
+
+
 /*
 
 

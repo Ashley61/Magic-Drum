@@ -1,4 +1,5 @@
-
+//1920x950
+//2400x1218
 var bcg,bcg1;
 
 function preload() {
@@ -18,9 +19,16 @@ function setup() {
       }
 
 function draw() {
+	
 	 background(bcg4)
-	background(game)
+	 game.resize(750*2.4, 260*3.4)
+	 imageW=game.width;
+	 imageH=game.height; 
+	
+	 image(game, width/2-imageW/2, height/2-imageH/2+80, imageW, imageH)
+	
 	fill(0);
+	
 	// rect(350,350,windowWidth-700,windowHeight-400);
 	
 

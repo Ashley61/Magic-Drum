@@ -62,3 +62,26 @@ var strToMidi={
 	 "D2":"80" 
 
 }
+
+
+TWINKLE_TWINKLE = {
+	notes: [
+	
+        {pitch:66, startTime: 0.0, endTime: 0.5, isDrum:true},
+        {pitch: 69, startTime: 0.5, endTime: 1.0, isDrum:true},
+        {pitch: 72, startTime: 1.0, endTime: 1.5, isDrum:true},
+        {pitch: 76, startTime: 1.5, endTime: 2.0, isDrum:true},
+        {pitch: 81, startTime: 2.0, endTime: 2.5, isDrum:true},
+        {pitch: 68, startTime: 2.5, endTime: 3.0, isDrum:true},
+        {pitch: 75, startTime: 3.0, endTime: 4.0, isDrum:true},
+        {pitch: 80, startTime: 4.0, endTime: 4.5, isDrum:true},
+        {pitch: 78, startTime: 4.5, endTime: 5.0, isDrum:true},
+        {pitch: 64, startTime: 5.0, endTime: 5.5, isDrum:true},
+        {pitch: 64, startTime: 5.5, endTime: 6.0, isDrum:true},
+        {pitch: 62, startTime: 6.0, endTime: 6.5, isDrum:true},
+        {pitch: 62, startTime: 6.5, endTime: 7.0, isDrum:true},
+        {pitch: 60, startTime: 7.0, endTime: 8.0, isDrum:true},  
+  
+	],
+	totalTime: 8
+      };

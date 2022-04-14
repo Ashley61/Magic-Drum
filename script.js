@@ -1,4 +1,3 @@
-
 const improvCheckpoint = 'https://storage.googleapis.com/magentadata/js/checkpoints/music_rnn/basic_rnn';
 const improvRNN = new mm.MusicRNN(improvCheckpoint)
 improvRNN.initialize();
@@ -7,6 +6,7 @@ improvRNN.initialize();
  // ​
  // // Create a player to play the sequence we'll get from the model.
   rnnPlayer = new mm.Player();
+
  // ​rnn_steps = 20;
   //rnn_temperature = 1.5;
  function play() {
@@ -21,34 +21,7 @@ var predictSeq={};
  var notes_array = [];
  var notesStore=[];
 
-   const activeSynths = {};
-
-
-//the example sequence-----------------------------------------------
- TWINKLE_TWINKLE = {
-	notes: [
-	
-        {pitch:66, startTime: 0.0, endTime: 0.5, isDrum:true},
-        {pitch: 69, startTime: 0.5, endTime: 1.0, isDrum:true},
-        {pitch: 72, startTime: 1.0, endTime: 1.5, isDrum:true},
-        {pitch: 76, startTime: 1.5, endTime: 2.0, isDrum:true},
-        {pitch: 81, startTime: 2.0, endTime: 2.5, isDrum:true},
-        {pitch: 68, startTime: 2.5, endTime: 3.0, isDrum:true},
-        {pitch: 75, startTime: 3.0, endTime: 4.0, isDrum:true},
-        {pitch: 80, startTime: 4.0, endTime: 4.5, isDrum:true},
-        {pitch: 78, startTime: 4.5, endTime: 5.0, isDrum:true},
-        {pitch: 64, startTime: 5.0, endTime: 5.5, isDrum:true},
-        {pitch: 64, startTime: 5.5, endTime: 6.0, isDrum:true},
-        {pitch: 62, startTime: 6.0, endTime: 6.5, isDrum:true},
-        {pitch: 62, startTime: 6.5, endTime: 7.0, isDrum:true},
-        {pitch: 60, startTime: 7.0, endTime: 8.0, isDrum:true},  
-  
-	],
-	totalTime: 8
-      };
-     
-//-----------------------------------------------------------------
-
+const activeSynths = {};
 
 
 
@@ -193,15 +166,32 @@ console.clear()
             'size': [250,40],
             'options': ['Choose the example','TWINKLE_TWINKLE','MerryChristmas']
           })
+        
+          var clean = new Nexus.RadioButton('#clean', {
+            'size': [70, 70],
+            'numberOfButtons': 1,
+            'active': -1
+        })
+        
 
 
         var slider = new Nexus.Slider('#tempo',{
-            'size': [120,20],
+            'size': [45,120],
             'mode': 'relative',  // 'relative' or 'absolute'
             'min': 70,
             'max': 250,
             'step': 1,
             'value': 128
+        })
+
+        var seqVolume = new Nexus.Dial('#seqVolume',{
+          'size': [75,75],
+          'interaction': 'radial', // "radial", "vertical", or "horizontal"
+          'mode': 'relative', // "absolute" or "relative"
+          'min': -10,
+          'max': 30,
+          'step': 0,
+          'value': 10
         })
 
         var noteNames1 = ["Eb1", "F#1", "Bb1", "C1"];
@@ -222,7 +212,7 @@ console.clear()
         var highNote=84;
 
         var piano = new Nexus.Piano('#pinao',{
-            'size': [800,285],
+            'size': [800,290],
             'mode': 'button',  // 'button', 'toggle', or 'impulse'
             'lowNote': lowNote,
             'highNote': highNote
@@ -261,7 +251,16 @@ console.clear()
 
         
       //     const midi = new Midi()
-        
+  
+            //  var meter = new Nexus.Meter('#visual', {
+            //   size: [120,200]
+            // })
+
+
+            // var oscilloscope = new Nexus.Oscilloscope('#visual',{
+            //   'size': [300,150]
+            // })
+           
 
         piano.on('change', (k) => {
             if (k.state) {
@@ -271,51 +270,57 @@ console.clear()
           
                }
                activeSynths[k.note].volume.value=-10;
-             activeSynths[k.note].triggerAttack(piano_MIDI_MAP[k.note]);
-            } 
+             activeSynths[k.note].triggerAttack(piano_MIDI_MAP[k.note]);  
+          // meter.connect(Tone.master,2);
+            //  document.write(Tone.time.toMilliseconds ( ) )
+            }
             else {
               activeSynths[k.note].triggerRelease();
             }})
 
 
+
+            
+ 
+            
             
 //record the melody------------------------------------------------------------------
         var countTimeNum=0;
-        var note_index = 0; 
+        var note_index = notes_array.length; 
         var loop1 = new Tone.Sequence(
             function (time, col) {
-                
-            
-              	 
-               
+           
                 var column = document.getElementById("seq1").currentColumn;
+                
 
                 column.forEach(function (val, i) {
                     if (val) {
                       
                         var vel = 127;
+                        keys1.get(noteNames1[i]).volume.value=seqVolume.value;
                         keys1.get(noteNames1[i]).start(time, 0, "16n", 0, vel);
                         
                         
                         //i: have clicked, need to store
                       
 	
-				// notes_array[note_index] = {};
-				// notes_array[note_index]["pitch"] = strToMidi[noteNames1[i]];
+				notes_array[note_index] = {};
+				notes_array[note_index]["pitch"] = strToMidi[noteNames1[i]];
        
-        // TODO use i to caculate time? i is the row but we need column
-//         if(col==0)
-//         {
-//         notes_array[note_index]["startTime"] =col*0.5;
-//         notes_array[note_index]["endTime"] = col*0.5+0.5;  
-//     }
-//     else{
-// 				notes_array[note_index]["startTime"] = (col-1)*0.5;
+     //   TODO use i to caculate time? i is the row but we need column
+
+        if(col==0)
+        {
+        notes_array[note_index]["startTime"] =0;
+        notes_array[note_index]["endTime"] = 0.5;  
+    }
+    else if(col<16){
+				notes_array[note_index]["startTime"] = col*0.5;
         
-// 				notes_array[note_index]["endTime"] = col*0.5;
-//                 ;}
-//    notes_array[note_index]["isDrum"] = true
-// 				note_index = note_index + 1;
+				notes_array[note_index]["endTime"] = notes_array[note_index]["startTime"]+0.5;
+                ;}
+   notes_array[note_index]["isDrum"] = true
+				note_index = note_index + 1;
       
                     }
              
@@ -326,14 +331,14 @@ console.clear()
                 }, time);
             }, [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15], "16n").start(0);
 
-                // countTimeNum=countTimeNum+0.5;
+                countTimeNum=countTimeNum+0.5;
               
-                // predictSeq["notes"]=notes_array;
-                // predictSeq["totalTime"]=8;
+                predictSeq["notes"]=notes_array;
+                predictSeq["totalTime"]=8;
  
 
 
-
+//------------------------------------------------------------------------------
 
         var keys2 = new Tone.Players({
             "Eb2": "toolKit/ride.mp3",
@@ -353,6 +358,32 @@ console.clear()
                     if (val) {
                         var vel = 127;
                         keys2.get(noteNames2[i]).start(time, 0, "16n", 0, vel);
+
+
+
+
+                  //       notes_array[note_index] = {};
+                  //       notes_array[note_index]["pitch"] = strToMidi[noteNames2[i]];
+                       
+                  //    //   TODO use i to caculate time? i is the row but we need column
+                
+                  //       if(col==0)
+                  //       {
+                  //       notes_array[note_index]["startTime"] =0;
+                  //       notes_array[note_index]["endTime"] = 0.5;  
+                  //   }
+                  //   else{
+                  //       notes_array[note_index]["startTime"] = col*0.5;
+                        
+                  //       notes_array[note_index]["endTime"] = notes_array[note_index]["startTime"]+0.5;
+                  //               ;}
+                  //  notes_array[note_index]["isDrum"] = true
+                  //       note_index = note_index + 1;
+
+
+
+
+
                     }
                 });
                 Tone.Draw.schedule(function () {
@@ -363,7 +394,7 @@ console.clear()
 
 
 
-
+//--------------------------------------------------------------------------------------------------------------------
 
         // var keys3 = new Tone.Players({
         //     //some problems
@@ -415,19 +446,18 @@ console.clear()
                     autoButton.on('change', function (v) {
                   if (v == 0) {
                       
-                    document.write(predictSeq["notes"][7].pitch);
-                    document.write(predictSeq["notes"][7].startTime);
-                    document.write(predictSeq["notes"][7].endTime);
-                    document.write(predictSeq["notes"][7].isDrum);
+                     //document.write(predictSeq["notes"][2].pitch);
+                
                      
-                   // document.write(predictSeq.notes[0].pitch); 
-                   //player.start(TWINKLE_TWINKLE);
+                
+                 // rnnPlayer.start(predictSeq);
 
                   const qns = mm.sequences.quantizeNoteSequence(predictSeq, 4);
                   continueSeq=improvRNN
                   .continueSequence(qns, 20, 1.5);
                  //continueSequence返回的到底是什么？
                   //sample是最后返回的sequence。怎样获取sample？
+                  
                   continueSeq.then((sample) => rnnPlayer.start(sample));
                 
                   //continueSeq.then((sample) =>document.write(sample.notes[0].pitch));
@@ -450,20 +480,27 @@ console.clear()
                     
                 test.on('change', function (v) {
                   if (v == 0) {
+               
+        //         print(predictSeq.notes[0].pitch)
                   //	document.write(predictSeq.notes[0].pitch);
                       var testPlayer=new mm.Player();
                       var cur={};
                   cur.notes=curNotes.notes;
-                     // cur.notes=curNotes.notes;
+                     
                       cur.totalTime=8;
+                      
                       for(var t=0;t<curNotes.notes.length;t++)
                 {
                   cur.notes[t].isDrum=true;
                 }
-                      //document.write(cur.notes[0].isDrum);
+                    //  document.write(cur.notes[0].isDrum);
                       testPlayer.start(curNotes);
-                      //document.write(cur.notes[0].pitch)
+                    
                   }})
+
+
+
+
 
 //---------------------------------------------------------------------------
 
@@ -476,7 +513,8 @@ console.clear()
                     if(v.value=="TWINKLE_TWINKLE"){
 
               
-                        player.start(TWINKLE_TWINKLE);example=TWINKLE_TWINKLE
+                        player.start(TWINKLE_TWINKLE);
+                        example=TWINKLE_TWINKLE
                     };
                            
                   })
@@ -522,8 +560,9 @@ console.clear()
 
         radiobutton.on('change', function (v) {
             if (v == 0) {
-                Tone.Transport.start()
-                $('#playState').text('Pause')
+                Tone.Transport.start();
+                $('#playState').text('Pause') ;
+               
             } else if (v == -1) {
                 Tone.Transport.stop()
                 $('#playState').text('Play')
@@ -534,9 +573,23 @@ console.clear()
 
         slider.on('change', function (v) {
             Tone.Transport.bpm.value = v;
-            $('#bpmValue').text('BPM : ' + v)
+            $('#bpmValue').text('BPM:' + v)
         })
 
-       
+
+
+
+//------------------------------------------------------------------------------------------
+//clean the sequence
+clean.on('change', function (v) {
+  if (v == 0) {
+
+predictSeq={};
+//document.getElementById("seq1").setAttribute("style", "background-color:blue;");
+//Tone.Transport.clear()   
+  }
+else
+{}})
+//-----------------------------------------------------------------------------------------------
 
         
