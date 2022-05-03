@@ -8,10 +8,17 @@
     /* margin: 20px; */
     /* width: 1200px;
     height: 400px; */
-    left: 27%;
-    bottom: 0.2%;
-    align-items: center;  
+    left:  calc(58vh );
+    bottom: calc(7vh);
+    align-items: center;
+    /* width: calc(61vh );
+    height: calc(40vh ); */
 
+}
+
+tone-step-sequencer {
+        width: calc(70vh);
+        height: calc(12.5vh);
 }
 
 
@@ -20,31 +27,30 @@
  position: absolute;
 
 
-    left:29%;
-    top: 22%;
+    left:calc(61vh );
+    top: calc(24.5vh );
     align-items: center; 
 }
 
 #switch{
 position: absolute;
-left:22%;
-bottom: 28%;
+left:  calc(50vh );
+bottom: calc(30vh);
     
 }
 #tempo
 {
 position: absolute;
        
-left: 22.5%;
-bottom:10%; 
+left:  calc(50vh );
+bottom: calc(15vh);
 }
 
 #auto
 {
         position: absolute;
-      
-        left:22%;
-        top: 22%;
+        left:  calc(50vh );
+        top: calc(25vh);
 
 }
 
@@ -52,21 +58,21 @@ bottom:10%;
 {
         position: absolute;
       
-        left:22%;
-        top: 40%;
+        left:  calc(50vh );
+        top: calc(40vh);
 
 
 }
 #clean{
         position: absolute;
-        right:23%;
-        bottom: 28%; 
+        right: calc(48vh);
+        bottom: calc(30vh); 
 }
 
 #seqVolume{
         position: absolute;
-        right:23%;
-        bottom: 12%;  
+        right: calc(48vh);
+        bottom: calc(18vh);   
 }
 
 #example

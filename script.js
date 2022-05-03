@@ -1,4 +1,4 @@
-const improvCheckpoint = 'https://storage.googleapis.com/magentadata/js/checkpoints/music_rnn/basic_rnn';
+const improvCheckpoint = 'https://storage.googleapis.com/magentadata/js/checkpoints/music_rnn/drum_kit_rnn';
 const improvRNN = new mm.MusicRNN(improvCheckpoint)
 improvRNN.initialize();
 
@@ -18,7 +18,7 @@ improvRNN.initialize();
 player = new mm.Player();
 var generateSequence;
 var predictSeq={};
- var notes_array = [];
+var notes_array = [];
  var notesStore=[];
 
 const activeSynths = {};
@@ -192,6 +192,7 @@ console.clear()
           'max': 30,
           'step': 0,
           'value': 10
+          
         })
 
         var noteNames1 = ["Eb1", "F#1", "Bb1", "C1"];
@@ -211,8 +212,10 @@ console.clear()
         var lowNote=72;
         var highNote=84;
 
+        var pianoW=window.screen.width *0.85*0.55;
+        var pianoH=window.screen.height *0.8*0.38;
         var piano = new Nexus.Piano('#pinao',{
-            'size': [800,290],
+            'size': [pianoW,pianoH],
             'mode': 'button',  // 'button', 'toggle', or 'impulse'
             'lowNote': lowNote,
             'highNote': highNote
@@ -285,7 +288,7 @@ console.clear()
             
             
 //record the melody------------------------------------------------------------------
-        var countTimeNum=0;
+        // var countTimeNum=0;
         var note_index = notes_array.length; 
         var loop1 = new Tone.Sequence(
             function (time, col) {
@@ -331,7 +334,7 @@ console.clear()
                 }, time);
             }, [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15], "16n").start(0);
 
-                countTimeNum=countTimeNum+0.5;
+                // countTimeNum=countTimeNum+0.5;
               
                 predictSeq["notes"]=notes_array;
                 predictSeq["totalTime"]=8;
@@ -361,74 +364,44 @@ console.clear()
 
 
 
-
-                  //       notes_array[note_index] = {};
-                  //       notes_array[note_index]["pitch"] = strToMidi[noteNames2[i]];
+                        notes_array[note_index] = {};
+                        notes_array[note_index]["pitch"] = strToMidi[noteNames2[i]];
                        
-                  //    //   TODO use i to caculate time? i is the row but we need column
+                     //   TODO use i to caculate time? i is the row but we need column
                 
-                  //       if(col==0)
-                  //       {
-                  //       notes_array[note_index]["startTime"] =0;
-                  //       notes_array[note_index]["endTime"] = 0.5;  
-                  //   }
-                  //   else{
-                  //       notes_array[note_index]["startTime"] = col*0.5;
-                        
-                  //       notes_array[note_index]["endTime"] = notes_array[note_index]["startTime"]+0.5;
-                  //               ;}
-                  //  notes_array[note_index]["isDrum"] = true
-                  //       note_index = note_index + 1;
-
-
-
-
-
+                        if(col==0)
+                        {
+                        notes_array[note_index]["startTime"] =0;
+                        notes_array[note_index]["endTime"] = 0.5;  
                     }
-                });
+                    else if(col<16){
+                        notes_array[note_index]["startTime"] = col*0.5;
+                        
+                        notes_array[note_index]["endTime"] = notes_array[note_index]["startTime"]+0.5;
+                                ;}
+                   notes_array[note_index]["isDrum"] = true
+                        note_index = note_index + 1;
+                      
+                                    }
+                             
+                                });
                 Tone.Draw.schedule(function () {
                     document.getElementById("seq2").setAttribute("highlight",
                         col);
                 }, time);
             }, [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15], "16n").start(0);
 
-
+            // countTimeNum=countTimeNum+0.5;
+              
+            predictSeq["notes"]=notes_array;
+            predictSeq["totalTime"]=8;
 
 //--------------------------------------------------------------------------------------------------------------------
 
-        // var keys3 = new Tone.Players({
-        //     //some problems
-        //     "C2": "toolKit/tom-mid.mp3",
-        //     "C#3": "https://res.cloudinary.com/degnified/video/upload/v1567497318/drum_o6byub.[mp3|ogg]",
-        //     "E3": "toolKit/tom-mid.mp3",
-        //     "A2": "https://res.cloudinary.com/degnified/video/upload/v1567497317/kick_wew9fm.[mp3|ogg]",
 
-    
-        // }, {
-        //     "volume": -8,
-        //     "fadeOut": "64n",
-        // })
-        // keys3.toMaster();;
-        // var noteNames3 = ["F#3", "E3", "C#3", "A2"];
-        // var loop3 = new Tone.Sequence(
-        //     function (time, col) {
-        //         var column = document.getElementById("seq3").currentColumn;
-        //         column.forEach(function (val, i) {
-        //             if (val) {
-        //                 var vel = 127;
-        //                 keys3.get(noteNames3[i]).start(time, 0, "16n", 0, vel);
-        //             }
-        //         });
-        //         Tone.Draw.schedule(function () {
-        //             document.getElementById("seq3").setAttribute("highlight",
-        //                 col);
-        //         }, time);
-        //     }, [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15], "16n").start(0);               
- //-----------------------------------------------------------------------------------------------    
-                    
-          
-    
-
+//The predict melody parameters setting
+predict_stepsPerQuarter=4
+predict_stepsNumber=60
 
 //predict the record melody-----------------------------------------------------------------
             var test = new Nexus.RadioButton('#test', {
@@ -445,20 +418,15 @@ console.clear()
                 //TODO: the predict function. maybe sth wrong with the predictSeq (time is wrong)
                     autoButton.on('change', function (v) {
                   if (v == 0) {
-                      
-                     //document.write(predictSeq["notes"][2].pitch);
-                
-                     
-                
-                 // rnnPlayer.start(predictSeq);
+                                   
 
-                  const qns = mm.sequences.quantizeNoteSequence(predictSeq, 4);
+                  const qns = mm.sequences.quantizeNoteSequence(predictSeq, predict_stepsPerQuarter);
                   continueSeq=improvRNN
-                  .continueSequence(qns, 20, 1.5);
+                  .continueSequence(qns, predict_stepsNumber, 1.5);
                  //continueSequence返回的到底是什么？
                   //sample是最后返回的sequence。怎样获取sample？
                   
-                  continueSeq.then((sample) => rnnPlayer.start(sample));
+                  // continueSeq.then((sample) => rnnPlayer.start(sample));
                 
                   //continueSeq.then((sample) =>document.write(sample.notes[0].pitch));
                 
@@ -468,6 +436,7 @@ console.clear()
                     
                   //   } 
                   curNotes=sample;
+                  rnnPlayer.start(curNotes)
                 })
                 
                 } 
@@ -479,24 +448,31 @@ console.clear()
 
                     
                 test.on('change', function (v) {
-                  if (v == 0) {
-               
-        //         print(predictSeq.notes[0].pitch)
-                  //	document.write(predictSeq.notes[0].pitch);
-                      var testPlayer=new mm.Player();
-                      var cur={};
-                  cur.notes=curNotes.notes;
-                     
-                      cur.totalTime=8;
-                      
-                      for(var t=0;t<curNotes.notes.length;t++)
-                {
-                  cur.notes[t].isDrum=true;
-                }
-                    //  document.write(cur.notes[0].isDrum);
+                 
+                  if (v == 0 ) {
+           
+                       var testPlayer=new mm.Player();
+     
+                       const osc = new Tone.Oscillator().toDestination();
+                       // repeated event every 8th note
+                       Tone.Transport.scheduleRepeat((time) => {
+                         // use the callback time to schedule events
+                         osc.start(time).stop(time + 0.1);
+                       }, "8n");
+                       // transport must be started before it starts invoking events
+                       Tone.Transport.start();
+          //TODO: How to loop?
+                      //testPlayer.setTempo(80);
                       testPlayer.start(curNotes);
+                      
+             
+                       
                     
-                  }})
+                  }
+                  else{
+                    testPlayer.stop(); 
+                  }
+                })
 
 
 

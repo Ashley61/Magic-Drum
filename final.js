@@ -21,11 +21,11 @@ function setup() {
 function draw() {
 	
 	 background(bcg4)
-	 game.resize(750*2.4, 260*3.4)
+	 game.resize(windowWidth*0.85, windowHeight*0.8)
 	 imageW=game.width;
 	 imageH=game.height; 
 	
-	 image(game, width/2-imageW/2, height/2-imageH/2+80, imageW, imageH)
+	image(game, width/2-imageW/2, height/2-imageH/2+80, imageW, imageH)
 	
 	fill(0);
 	
