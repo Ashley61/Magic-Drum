@@ -88,67 +88,7 @@ const sequence = {
             'active': -1
         }) 
  
-        
-// const startProgram = async () => {
-//     try {
-//         await improvRNN.initialize()
-//        // let improvisedMelody = await improvRNN.continueSequence(quantizedSequence, 60, 1.1, ['Bm', 'Bbm', 'Gb7', 'F7', 'Ab', 'Ab7', 'G7', 'Gb7', 'F7', 'Bb7', 'Eb7', 'AM7'])
-    
-//         const playOriginalMelody = () => {
-//           // sequence.notes.forEach(note => {
-//           // //  Note.fromMidi(note.pitch)
-//           //   synth.triggerAttackRelease(Note.fromMidi(note.pitch), note.endTime - note.startTime, note.startTime)
-//           // })
-//           player.start(sequence);
-
-//         }
-    
-//         const playGeneratedMelody = () => {
-//           // improvisedMelody.notes.forEach(note => {
-//           //   synth.triggerAttackRelease(Note.fromMidi(note.pitch), note.quantizedEndStep - note.quantizedStartStep, note.quantizedStartStep)
-//           // })
-//           const qns = mm.sequences.quantizeNoteSequence(sequence, 4);
-//  generateSequence= improvRNN
-//  .continueSequence(qns, 20, 1.5);
-//   //         improvRNN
-//   // .continueSequence(qns, 20, 1.5)
-
-//   generateSequence
-//   .then((sample) => rnnPlayer.start(sample));
-//         }
-    
-//     //  autoButton.on('change', function (v){
-//     //     // playOriginalMelody();
-//     //        playGeneratedMelody();
-//     //     })
-//       } catch (error) {
-//         console.error(error)
-//       }
-// }
-
-
-
-// function drum_to_note_sequence(quantize_tensor) {
-// 	var notes_array = [];
-// 	var note_index = 0;
-// 	//for (var i = 0; i < quantize_tensor.length; i++) {
-// 		var notes = quantize_tensor.notes;
-// 		if(notes.length > 0) {
-// 			for (var j = 0; j < notes.length; j++) {
-// 				notes_array[note_index] = {};
-// 				notes_array[note_index]["pitch"] = quantize_tensor.notes[j].pitch;
-// 				notes_array[note_index]["startTime"] = quantize_tensor.notes[j].startTime;
-// 				notes_array[note_index]["endTime"] = quantize_tensor.notes[j].endTime;
-//         notes_array[note_index]["isDrum"]=true;
-// 				note_index = note_index + 1;
-// 			}
-// 		}
-// //	}
-//   return notes_array;
-// }
-
-
-//startProgram()
+ 
 
 console.clear()
         var radiobutton = new Nexus.RadioButton('#switch', {
@@ -176,7 +116,7 @@ console.clear()
 
 
         var slider = new Nexus.Slider('#tempo',{
-            'size': [45,120],
+            'size': [45,110],
             'mode': 'relative',  // 'relative' or 'absolute'
             'min': 70,
             'max': 250,
@@ -195,12 +135,32 @@ console.clear()
           
         })
 
-        var noteNames1 = ["Eb1", "F#1", "Bb1", "C1"];
+        var pre_perQuarter = new Nexus.Slider('#pre_perQuarter',{
+          'size': [120,30],
+          'mode': 'relative',  // 'relative' or 'absolute'
+          'min': 1,
+          'max': 16,
+          'step': 0,
+          'value': 4
+      })
+
+
+      var pre_stepsNum = new Nexus.Number('#pre_stepsNum',{
+        'size': [90,50],
+        'value': 60,
+        'min': 10,
+        'max': 200,
+        'step': 1
+      })
+
+
+
+        var noteNames1 = ["Eb1", "F#1", "Bb1", "C2"];
         var keys1 = new Tone.Players({
             "Eb1": "toolkit/clap.mp3",
             "F#1": "toolkit/hihat-closed.mp3",
             "Bb1": "toolkit/hihat-open.mp3",
-            "C1": "toolkit/C4.mp3",
+            "C2": "toolkit/snare.mp3",
 
         }, {
             "volume": -10,
@@ -346,14 +306,14 @@ console.clear()
         var keys2 = new Tone.Players({
             "Eb2": "toolKit/ride.mp3",
             "D1": "toolKit/snare.mp3",
-            "D2": "toolKit/tom-high.mp3",
-            "A1": "toolKit/tom-low.mp3",
+            "G1": "toolKit/tom-high.mp3",
+            "B1": "toolKit/tom-low.mp3",
         }, {
             "volume": -10,
             "fadeOut": "64n",
         })
         keys2.toMaster();
-        var noteNames2 = ["Eb2", "D1", "D2", "A1"];
+        var noteNames2 = ["Eb2", "D1", "G1", "B1"];
         var loop2 = new Tone.Sequence(
             function (time, col) {
                 var column = document.getElementById("seq2").currentColumn;
@@ -400,8 +360,8 @@ console.clear()
 
 
 //The predict melody parameters setting
-predict_stepsPerQuarter=4
-predict_stepsNumber=60
+predict_stepsPerQuarter=pre_perQuarter.value;
+predict_stepsNumber=pre_stepsNum.value;
 
 //predict the record melody-----------------------------------------------------------------
             var test = new Nexus.RadioButton('#test', {
@@ -561,6 +521,9 @@ clean.on('change', function (v) {
   if (v == 0) {
 
 predictSeq={};
+// Tone.Draw.schedule(function () {
+//   document.getElementById("seq1").cancel();
+// }, time);
 //document.getElementById("seq1").setAttribute("style", "background-color:blue;");
 //Tone.Transport.clear()   
   }
