@@ -115,13 +115,13 @@ console.clear()
         
 
 
-        var slider = new Nexus.Slider('#tempo',{
-            'size': [45,110],
+        var slider = new Nexus.Dial('#tempo',{
+            'size': [75,75],
             'mode': 'relative',  // 'relative' or 'absolute'
-            'min': 70,
+            'min': 50,
             'max': 250,
             'step': 1,
-            'value': 128
+            'value':  90
         })
 
         var seqVolume = new Nexus.Dial('#seqVolume',{
@@ -210,19 +210,7 @@ console.clear()
             piano.toggleIndex(keyIndex, false) : null;
           });
 
-        //   const synth = new Tone.Synth().toMaster();
-
-        
-      //     const midi = new Midi()
-  
-            //  var meter = new Nexus.Meter('#visual', {
-            //   size: [120,200]
-            // })
-
-
-            // var oscilloscope = new Nexus.Oscilloscope('#visual',{
-            //   'size': [300,150]
-            // })
+     
            
 
         piano.on('change', (k) => {
