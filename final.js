@@ -21,7 +21,7 @@ function setup() {
 function draw() {
 	
 	 background(bcg4)
-	 game.resize(windowWidth*0.85, windowHeight*0.8)
+	 game.resize(windowWidth*0.95, windowHeight*0.85)
 	 imageW=game.width;
 	 imageH=game.height; 
 	

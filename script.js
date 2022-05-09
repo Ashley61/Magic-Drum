@@ -172,8 +172,8 @@ console.clear()
         var lowNote=72;
         var highNote=84;
 
-        var pianoW=window.screen.width *0.85*0.55;
-        var pianoH=window.screen.height *0.8*0.38;
+        var pianoW=document.body.clientWidth *0.85*0.48;
+        var pianoH=window.screen.height *0.8*0.30;
         var piano = new Nexus.Piano('#pinao',{
             'size': [pianoW,pianoH],
             'mode': 'button',  // 'button', 'toggle', or 'impulse'
@@ -352,11 +352,11 @@ predict_stepsPerQuarter=pre_perQuarter.value;
 predict_stepsNumber=pre_stepsNum.value;
 
 //predict the record melody-----------------------------------------------------------------
-            var test = new Nexus.RadioButton('#test', {
-              'size': [70, 70],
-              'numberOfButtons': 1,
-              'active': -1
-                })
+            // var test = new Nexus.RadioButton('#test', {
+            //   'size': [70, 70],
+            //   'numberOfButtons': 1,
+            //   'active': -1
+            //     })
 
 
                 var curNotes;
@@ -395,32 +395,32 @@ predict_stepsNumber=pre_stepsNum.value;
                     })
 
                     
-                test.on('change', function (v) {
+          //       test.on('change', function (v) {
                  
-                  if (v == 0 ) {
+          //         if (v == 0 ) {
            
-                       var testPlayer=new mm.Player();
+          //              var testPlayer=new mm.Player();
      
-                       const osc = new Tone.Oscillator().toDestination();
-                       // repeated event every 8th note
-                       Tone.Transport.scheduleRepeat((time) => {
-                         // use the callback time to schedule events
-                         osc.start(time).stop(time + 0.1);
-                       }, "8n");
-                       // transport must be started before it starts invoking events
-                       Tone.Transport.start();
-          //TODO: How to loop?
-                      //testPlayer.setTempo(80);
-                      testPlayer.start(curNotes);
+          //              const osc = new Tone.Oscillator().toDestination();
+          //              // repeated event every 8th note
+          //              Tone.Transport.scheduleRepeat((time) => {
+          //                // use the callback time to schedule events
+          //                osc.start(time).stop(time + 0.1);
+          //              }, "8n");
+          //              // transport must be started before it starts invoking events
+          //              Tone.Transport.start();
+          // //TODO: How to loop?
+          //             //testPlayer.setTempo(80);
+          //             testPlayer.start(curNotes);
                       
              
                        
                     
-                  }
-                  else{
-                    testPlayer.stop(); 
-                  }
-                })
+          //         }
+          //         else{
+          //           testPlayer.stop(); 
+          //         }
+          //       })
 
 
 

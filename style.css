@@ -8,8 +8,8 @@
     /* margin: 20px; */
     /* width: 1200px;
     height: 400px; */
-    left:  calc(58vh );
-    bottom: calc(5vh);
+    left:  calc(26vw );
+    bottom: calc(0vh);
     align-items: center;
     /* width: calc(61vh );
     height: calc(40vh ); */
@@ -17,7 +17,7 @@
 }
 
 tone-step-sequencer {
-        width: calc(70vh);
+        width: calc(40vw);
         height: calc(12.5vh);
 }
 
@@ -27,62 +27,66 @@ tone-step-sequencer {
  position: absolute;
 
 
-    left:calc(61.5vh );
-    top: calc(25vh );
+    left:calc(29vw );
+    top: calc(27vh );
     align-items: center; 
 }
 
 #switch{
 position: absolute;
-left:  calc(50vh );
-bottom: calc(30vh);
+left:  calc(20vw );
+bottom: calc(20vh);
     
 }
 #tempo
 {
-position: absolute;
+/* position: absolute;
        
 left:  calc(50vh );
-bottom: calc(15vh);
+bottom: calc(15vh); */
+position: absolute;
+      
+left:  calc(20vw );
+top: calc(40vh);
 }
 
 #auto
 {
         position: absolute;
-        left:  calc(50vh );
+        left:  calc(20vw );
         top: calc(26vh);
 
 }
 #pre_perQuarter{
         position: absolute;
-        right:  calc(46vh );
+        right:  calc(20vw );
         top: calc(28vh); 
 }
 #pre_stepsNum
 {
         position: absolute;
-        right:  calc(50vh );
+        right:  calc(22vw );
         top: calc(40vh); 
 }
-#auto_test
-{
+/* #auto_test */
+/* {
         position: absolute;
       
         left:  calc(50vh );
         top: calc(40vh);
 
 
-}
+} */
 #clean{
         position: absolute;
-        right: calc(48vh);
-        bottom: calc(30vh); 
+        right: calc(20vw);
+        bottom: calc(25vh); 
 }
 
 #seqVolume{
         position: absolute;
-        right: calc(48vh);
-        bottom: calc(18vh);   
+        right: calc(20vw);
+        bottom: calc(10vh);   
 }
 
 #example
