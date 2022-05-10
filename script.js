@@ -37,33 +37,6 @@ const activeSynths = {};
  */
 
 
-//  const DRUM_CLASSES = [
-//     'Kick',
-//     'Snare',
-//     'Hi-hat closed',
-//     'Hi-hat open',
-//     'Tom low',
-//     'Tom mid',
-//     'Tom high',
-//     'Clap',
-//     'Rim'];
-
-
-  
-//     function getStepVelocity(step) {
-//         if (step % 4 === 0) {
-//           return 'high';
-//         } else if (step % 2 === 0) {
-//           return 'med';
-//         } else {
-//           return 'low';
-//         }
-//       }
-      
-      
-// //small draft to try the drumRNN
-// const { midi, Note } = Tonal  
-// const synth = new Tone.Synth().toMaster()
 
 const sequence = {
  
@@ -285,7 +258,8 @@ console.clear()
                 // countTimeNum=countTimeNum+0.5;
               
                 predictSeq["notes"]=notes_array;
-                predictSeq["totalTime"]=8;
+                predictSeq["totalTime"]=9;
+                predictSeq["key_signatures"]=slider.value
  
 
 
@@ -293,7 +267,7 @@ console.clear()
 
         var keys2 = new Tone.Players({
             "Eb2": "toolKit/ride.mp3",
-            "D1": "toolKit/snare.mp3",
+            "D1": "toolKit/tom-mid.mp3",
             "G1": "toolKit/tom-high.mp3",
             "B1": "toolKit/tom-low.mp3",
         }, {
@@ -342,7 +316,8 @@ console.clear()
             // countTimeNum=countTimeNum+0.5;
               
             predictSeq["notes"]=notes_array;
-            predictSeq["totalTime"]=8;
+            predictSeq["totalTime"]=9;
+            predictSeq["key_signatures"]=slider.value
 
 //--------------------------------------------------------------------------------------------------------------------
 
@@ -352,11 +327,11 @@ predict_stepsPerQuarter=pre_perQuarter.value;
 predict_stepsNumber=pre_stepsNum.value;
 
 //predict the record melody-----------------------------------------------------------------
-            // var test = new Nexus.RadioButton('#test', {
-            //   'size': [70, 70],
-            //   'numberOfButtons': 1,
-            //   'active': -1
-            //     })
+            var test = new Nexus.RadioButton('#test', {
+              'size': [70, 70],
+              'numberOfButtons': 1,
+              'active': -1
+                })
 
 
                 var curNotes;
@@ -366,24 +341,13 @@ predict_stepsNumber=pre_stepsNum.value;
                 //TODO: the predict function. maybe sth wrong with the predictSeq (time is wrong)
                     autoButton.on('change', function (v) {
                   if (v == 0) {
-                                   
-
                   const qns = mm.sequences.quantizeNoteSequence(predictSeq, predict_stepsPerQuarter);
                   continueSeq=improvRNN
                   .continueSequence(qns, predict_stepsNumber, 1.5);
-                 //continueSequence返回的到底是什么？
-                  //sample是最后返回的sequence。怎样获取sample？
-                  
-                  // continueSeq.then((sample) => rnnPlayer.start(sample));
                 
-                  //continueSeq.then((sample) =>document.write(sample.notes[0].pitch));
-                
-                //    document.write(continueSeq);
                     continueSeq.then((sample)=> {
-                  //   for(var t=0;t<sample.notes.length;t++){
-                    
-                  //   } 
                   curNotes=sample;
+                  curNotes["totalTime"]=pre_stepsNum*0.5
                   rnnPlayer.start(curNotes)
                 })
                 
@@ -394,10 +358,15 @@ predict_stepsNumber=pre_stepsNum.value;
                   }
                     })
 
-                    
-          //       test.on('change', function (v) {
-                 
-          //         if (v == 0 ) {
+               function playPredictSeq(){
+                var testPlayer=new mm.Player(); 
+                testPlayer.start(curNotes);  
+               }  
+               
+               
+                test.on('change', function (v) {
+                 let timerId;
+                  if (v == 0 ) {
            
           //              var testPlayer=new mm.Player();
      
@@ -412,15 +381,16 @@ predict_stepsNumber=pre_stepsNum.value;
           // //TODO: How to loop?
           //             //testPlayer.setTempo(80);
           //             testPlayer.start(curNotes);
-                      
-             
-                       
-                    
-          //         }
-          //         else{
-          //           testPlayer.stop(); 
-          //         }
-          //       })
+           var curNotesLen=curNotes["notes"].length;
+                    timerId=setInterval("playPredictSeq()",curNotes["notes"].length*0.1*1000 )  
+         
+        
+          }     
+                
+                  else{
+                    setTimeout(() => { clearInterval(timerId); alert('stop'); }, 1000);
+                  }
+                })
 
 
 

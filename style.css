@@ -1,6 +1,8 @@
 
 
 
+
+
 .seqContent
 {
      
@@ -35,21 +37,25 @@ tone-step-sequencer {
 #switch{
 position: absolute;
 left:  calc(20vw );
-bottom: calc(20vh);
+bottom: calc(25vh);
     
 }
 #tempo
 {
-/* position: absolute;
-       
-left:  calc(50vh );
-bottom: calc(15vh); */
 position: absolute;
+       
+left:  calc(20vw );
+bottom: calc(10vh);
+/* position: absolute;
       
 left:  calc(20vw );
-top: calc(40vh);
+top: calc(40vh); */
 }
-
+.labels {
+    font-size:12px;
+    margin-left:-850px;
+    line-height: 45px;
+}
 #auto
 {
         position: absolute;
@@ -68,15 +74,15 @@ top: calc(40vh);
         right:  calc(22vw );
         top: calc(40vh); 
 }
-/* #auto_test */
-/* {
+ #auto_test 
+{
         position: absolute;
       
-        left:  calc(50vh );
+        left:  calc(20vw );
         top: calc(40vh);
 
 
-} */
+}
 #clean{
         position: absolute;
         right: calc(20vw);
