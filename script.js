@@ -77,7 +77,7 @@ console.clear()
         })
         var select = new Nexus.Select('#example',{
             'size': [250,40],
-            'options': ['Choose the example','TWINKLE_TWINKLE','MerryChristmas']
+            'options': ['Choose the example','TWINKLE_TWINKLE']
           })
         
           var clean = new Nexus.RadioButton('#clean', {
