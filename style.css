@@ -108,7 +108,7 @@ top: calc(40vh); */
 {
         position: absolute;
       
-        right: calc(10vh);
+        right: calc(5vh);
         top: calc(20vh)  ;   
 }
 
@@ -131,6 +131,7 @@ right: 20%;
   text-shadow: 0 0 2px rgb(253, 114, 242); 
   color: rgb(144, 210, 248);
   text-align: center;
+
 }
 
 /*

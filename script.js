@@ -122,7 +122,7 @@ console.clear()
         'size': [90,50],
         'value': 60,
         'min': 10,
-        'max': 200,
+        'max': 500,
         'step': 1
       })
 
@@ -259,7 +259,7 @@ console.clear()
               
                 predictSeq["notes"]=notes_array;
                 predictSeq["totalTime"]=9;
-                predictSeq["key_signatures"]=slider.value
+                predictSeq["key_signatures"]=pre_perQuarter.value
  
 
 
@@ -317,7 +317,7 @@ console.clear()
               
             predictSeq["notes"]=notes_array;
             predictSeq["totalTime"]=9;
-            predictSeq["key_signatures"]=slider.value
+            predictSeq["key_signatures"]=pre_perQuarter.value
 
 //--------------------------------------------------------------------------------------------------------------------
 
@@ -343,11 +343,11 @@ predict_stepsNumber=pre_stepsNum.value;
                   if (v == 0) {
                   const qns = mm.sequences.quantizeNoteSequence(predictSeq, predict_stepsPerQuarter);
                   continueSeq=improvRNN
-                  .continueSequence(qns, predict_stepsNumber, 1.5);
+                  .continueSequence(qns, predict_stepsNumber,1.5);
                 
                     continueSeq.then((sample)=> {
                   curNotes=sample;
-                  curNotes["totalTime"]=pre_stepsNum*0.5
+                  curNotes["totalTime"]=pre_stepsNum.value*0.5
                   rnnPlayer.start(curNotes)
                 })
                 
@@ -361,34 +361,23 @@ predict_stepsNumber=pre_stepsNum.value;
                function playPredictSeq(){
                 var testPlayer=new mm.Player(); 
                 testPlayer.start(curNotes);  
+             
                }  
                
-               
+                let timerId;
                 test.on('change', function (v) {
-                 let timerId;
+                
                   if (v == 0 ) {
            
-          //              var testPlayer=new mm.Player();
-     
-          //              const osc = new Tone.Oscillator().toDestination();
-          //              // repeated event every 8th note
-          //              Tone.Transport.scheduleRepeat((time) => {
-          //                // use the callback time to schedule events
-          //                osc.start(time).stop(time + 0.1);
-          //              }, "8n");
-          //              // transport must be started before it starts invoking events
-          //              Tone.Transport.start();
-          // //TODO: How to loop?
-          //             //testPlayer.setTempo(80);
-          //             testPlayer.start(curNotes);
-           var curNotesLen=curNotes["notes"].length;
-                    timerId=setInterval("playPredictSeq()",curNotes["notes"].length*0.1*1000 )  
+ 
+           
+                    timerId=setInterval(function(){playPredictSeq()},curNotes["notes"].length*0.1*1000 )  
          
         
           }     
                 
                   else{
-                    setTimeout(() => { clearInterval(timerId); alert('stop'); }, 1000);
+                    clearInterval(timerId)
                   }
                 })
 
@@ -471,7 +460,15 @@ predict_stepsNumber=pre_stepsNum.value;
         })
 
 
+        pre_perQuarter.on('change', function (v) {
+          predict_stepsPerQuarter = v;
+   
+      })
 
+      pre_stepsNum.on('change', function (v) {
+        predict_stepsNumber = v;
+
+    })
 
 //------------------------------------------------------------------------------------------
 //clean the sequence
