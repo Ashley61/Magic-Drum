@@ -7,6 +7,7 @@ improvRNN.initialize();
  // // Create a player to play the sequence we'll get from the model.
   rnnPlayer = new mm.Player();
 
+
  // ​rnn_steps = 20;
   //rnn_temperature = 1.5;
  function play() {
@@ -259,7 +260,7 @@ console.clear()
               
                 predictSeq["notes"]=notes_array;
                 predictSeq["totalTime"]=9;
-                predictSeq["key_signatures"]=pre_perQuarter.value
+          
  
 
 
@@ -317,7 +318,7 @@ console.clear()
               
             predictSeq["notes"]=notes_array;
             predictSeq["totalTime"]=9;
-            predictSeq["key_signatures"]=pre_perQuarter.value
+
 
 //--------------------------------------------------------------------------------------------------------------------
 
@@ -345,10 +346,14 @@ predict_stepsNumber=pre_stepsNum.value;
                   continueSeq=improvRNN
                   .continueSequence(qns, predict_stepsNumber,1.5);
                 
-                    continueSeq.then((sample)=> {
+                    continueSeq.then(
+                      (sample)=> {
                   curNotes=sample;
-                  curNotes["totalTime"]=pre_stepsNum.value*0.5
-                  rnnPlayer.start(curNotes)
+                  curNotes["totalTime"]=pre_stepsNum.value*0.5;
+                 
+
+              
+                 rnnPlayer.start(curNotes)
                 })
                 
                 } 
@@ -475,15 +480,40 @@ predict_stepsNumber=pre_stepsNum.value;
 clean.on('change', function (v) {
   if (v == 0) {
 
+    // loop1(function(time, col) {
+    //   Tone.Draw.schedule(function () {
+    //     document.getElementById("seq1").setAttribute("highlight",
+    //         col+1);
+    // }, time); 
+
+    // })
+    location.reload();
 predictSeq={};
+
 // Tone.Draw.schedule(function () {
 //   document.getElementById("seq1").cancel();
 // }, time);
-//document.getElementById("seq1").setAttribute("style", "background-color:blue;");
+//setAttribute("style", "background-color:blue;");
 //Tone.Transport.clear()   
   }
 else
 {}})
 //-----------------------------------------------------------------------------------------------
 
-        
+async function plotSpectra(spectra, channel) {
+  const spectraPlot = mm.tf.tidy(() => {
+  // Slice a single example.
+  let spectraPlot = mm.tf.slice(spectra, [0, 0, 0, channel], [1,
+ -1, -1, 1])
+  .reshape([128, 1024]);
+  // Scale to [0, 1].
+  spectraPlot = mm.tf.sub(spectraPlot, mm.tf.min(spectraPlot));
+  spectraPlot = mm.tf.div(spectraPlot, mm.tf.max(spectraPlot));
+  return spectraPlot;
+  });
+  // Plot on canvas.
+  const canvas = document.createElement("canvas");
+  containerPlots.appendChild(canvas);
+  await mm.tf.browser.toPixels(spectraPlot, canvas);
+  spectraPlot.dispose();
+ }

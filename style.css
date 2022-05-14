@@ -21,6 +21,8 @@
 tone-step-sequencer {
         width: calc(40vw);
         height: calc(12.5vh);
+        background-color: #efcfe3;
+
 }
 
 
