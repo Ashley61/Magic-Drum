@@ -7,14 +7,12 @@
 {
      
     position: absolute;
-    /* margin: 20px; */
-    /* width: 1200px;
-    height: 400px; */
+/* left:  calc(26vw );
+    bottom: calc(0vh); */
     left:  calc(26vw );
-    bottom: calc(0vh);
+bottom: calc(-0.5vh);
     align-items: center;
-    /* width: calc(61vh );
-    height: calc(40vh ); */
+    
 
 }
 
@@ -29,7 +27,8 @@ tone-step-sequencer {
 #pinao{
 
  position: absolute;
-
+/*  left:calc(29vw );
+    top: calc(27vh ); */
 
     left:calc(29vw );
     top: calc(27vh );
@@ -53,6 +52,10 @@ bottom: calc(10vh);
 left:  calc(20vw );
 top: calc(40vh); */
 }
+
+
+
+
 .labels {
     font-size:12px;
     margin-left:-850px;

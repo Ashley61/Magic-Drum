@@ -145,7 +145,8 @@ console.clear()
         
         var lowNote=72;
         var highNote=84;
-
+//document.body.clientWidth *0.85*0.48;
+//window.screen.height *0.8*0.30;
         var pianoW=document.body.clientWidth *0.85*0.48;
         var pianoH=window.screen.height *0.8*0.30;
         var piano = new Nexus.Piano('#pinao',{
@@ -237,12 +238,12 @@ console.clear()
         if(col==0)
         {
         notes_array[note_index]["startTime"] =0;
-        notes_array[note_index]["endTime"] = 0.5;  
+        notes_array[note_index]["endTime"] = 0.125;  
     }
     else if(col<16){
-				notes_array[note_index]["startTime"] = col*0.5;
+				notes_array[note_index]["startTime"] = col*0.125;
         
-				notes_array[note_index]["endTime"] = notes_array[note_index]["startTime"]+0.5;
+				notes_array[note_index]["endTime"] = notes_array[note_index]["startTime"]+0.125;
                 ;}
    notes_array[note_index]["isDrum"] = true
 				note_index = note_index + 1;
@@ -259,7 +260,7 @@ console.clear()
                 // countTimeNum=countTimeNum+0.5;
               
                 predictSeq["notes"]=notes_array;
-                predictSeq["totalTime"]=9;
+                predictSeq["totalTime"]=notes_array.length*0.125;
           
  
 
@@ -295,12 +296,12 @@ console.clear()
                         if(col==0)
                         {
                         notes_array[note_index]["startTime"] =0;
-                        notes_array[note_index]["endTime"] = 0.5;  
+                        notes_array[note_index]["endTime"] = 0.125;  
                     }
                     else if(col<16){
-                        notes_array[note_index]["startTime"] = col*0.5;
+                        notes_array[note_index]["startTime"] = col*0.125;
                         
-                        notes_array[note_index]["endTime"] = notes_array[note_index]["startTime"]+0.5;
+                        notes_array[note_index]["endTime"] = notes_array[note_index]["startTime"]+0.125;
                                 ;}
                    notes_array[note_index]["isDrum"] = true
                         note_index = note_index + 1;
@@ -317,7 +318,7 @@ console.clear()
             // countTimeNum=countTimeNum+0.5;
               
             predictSeq["notes"]=notes_array;
-            predictSeq["totalTime"]=9;
+            predictSeq["totalTime"]=notes_array.length*0.125;
 
 
 //--------------------------------------------------------------------------------------------------------------------
@@ -358,10 +359,15 @@ predict_stepsNumber=pre_stepsNum.value;
                 
                 } 
                   else if (v == -1) {  
+                    // const magentaMIDI= core.sequenceProtoToMidi(curNotes)
+                    // const magentaFile = new Blob([magentaMIDI], { type: 'audio/midi' })
+                    // const magentaURL = URL.createObjectURL(magentaFile);
+              
                     rnnPlayer.stop();
                   
                   }
                     })
+     
 
                function playPredictSeq(){
                 var testPlayer=new mm.Player(); 
