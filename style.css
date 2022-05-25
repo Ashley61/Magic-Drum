@@ -1,8 +1,4 @@
 
-
-
-
-
 .seqContent
 {
      
@@ -47,10 +43,7 @@ position: absolute;
        
 left:  calc(20vw );
 bottom: calc(10vh);
-/* position: absolute;
-      
-left:  calc(20vw );
-top: calc(40vh); */
+
 }
 
 
@@ -139,8 +132,3 @@ right: 20%;
 
 }
 
-/*
-
-
-        https://coolors.co/e27396-ea9ab2-efcfe3-eaf2d7-b3dee2
-         */

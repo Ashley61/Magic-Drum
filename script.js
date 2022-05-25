@@ -1,41 +1,24 @@
+// initialize
 const improvCheckpoint = 'https://storage.googleapis.com/magentadata/js/checkpoints/music_rnn/drum_kit_rnn';
 const improvRNN = new mm.MusicRNN(improvCheckpoint)
 improvRNN.initialize();
 
- //improvRNN.initialize();
- // ​
- // // Create a player to play the sequence we'll get from the model.
-  rnnPlayer = new mm.Player();
+rnnPlayer = new mm.Player();
 
 
- // ​rnn_steps = 20;
-  //rnn_temperature = 1.5;
  function play() {
    if (rnnPlayer.isPlaying()) {
      rnnPlayer.stop();
      return;
    }
 }
+
 player = new mm.Player();
-var generateSequence;
-var predictSeq={};
-var notes_array = [];
- var notesStore=[];
+var predictSeq={}; // store the predicted sequence
+var notes_array = []; //store the note of predicted sequence 
+
 
 const activeSynths = {};
-
-
-
-/**
- * perhaps:
- * 1.midiDrums=[,,,]
- * 2.temperature and patternLength
- * 3.reverseMIDIMap??
- * 4.fromNoteSequence()
- * 5.toNoteSequence()
- * 6.playPattern()
- * 
- */
 
 
 
@@ -54,33 +37,36 @@ const sequence = {
  totalTime:8
 };
 
-//const quantizedSequence = mm.sequences.quantizeNoteSequence(sequence, 4);
 
+
+        //predict button
         var autoButton = new Nexus.RadioButton('#auto', {
             'size': [70, 70],
             'numberOfButtons': 1,
             'active': -1
         }) 
  
- 
-
-console.clear()
+        //play button
         var radiobutton = new Nexus.RadioButton('#switch', {
             'size': [70, 70],
             'numberOfButtons': 1,
             'active': -1
         })
 
+        //predict example button
         var exampleButton = new Nexus.RadioButton('#examplePredict', {
             'size': [70, 70],
             'numberOfButtons': 1,
             'active': -1
         })
+
+        //select example button
         var select = new Nexus.Select('#example',{
             'size': [250,40],
             'options': ['Choose the example','TWINKLE_TWINKLE']
           })
         
+        //clean button
           var clean = new Nexus.RadioButton('#clean', {
             'size': [70, 70],
             'numberOfButtons': 1,
@@ -88,16 +74,17 @@ console.clear()
         })
         
 
-
+        //BPM button
         var slider = new Nexus.Dial('#tempo',{
             'size': [75,75],
-            'mode': 'relative',  // 'relative' or 'absolute'
+            'mode': 'relative',  
             'min': 50,
             'max': 250,
             'step': 1,
             'value':  90
         })
 
+        //sequencer volume button
         var seqVolume = new Nexus.Dial('#seqVolume',{
           'size': [75,75],
           'interaction': 'radial', // "radial", "vertical", or "horizontal"
@@ -109,6 +96,7 @@ console.clear()
           
         })
 
+        //predict result perQuarter  button
         var pre_perQuarter = new Nexus.Slider('#pre_perQuarter',{
           'size': [120,30],
           'mode': 'relative',  // 'relative' or 'absolute'
@@ -118,7 +106,7 @@ console.clear()
           'value': 4
       })
 
-
+      //predict result steps number button
       var pre_stepsNum = new Nexus.Number('#pre_stepsNum',{
         'size': [90,50],
         'value': 60,
@@ -129,24 +117,9 @@ console.clear()
 
 
 
-        var noteNames1 = ["Eb1", "F#1", "Bb1", "C2"];
-        var keys1 = new Tone.Players({
-            "Eb1": "toolkit/clap.mp3",
-            "F#1": "toolkit/hihat-closed.mp3",
-            "Bb1": "toolkit/hihat-open.mp3",
-            "C2": "toolkit/snare.mp3",
-
-        }, {
-            "volume": -10,
-    //        "fadeOut": "64n",
-        })
-        keys1.toMaster();
- 
-        
+        //8-key pinao
         var lowNote=72;
         var highNote=84;
-//document.body.clientWidth *0.85*0.48;
-//window.screen.height *0.8*0.30;
         var pianoW=document.body.clientWidth *0.85*0.48;
         var pianoH=window.screen.height *0.8*0.30;
         var piano = new Nexus.Piano('#pinao',{
@@ -197,8 +170,6 @@ console.clear()
                }
                activeSynths[k.note].volume.value=-10;
              activeSynths[k.note].triggerAttack(piano_MIDI_MAP[k.note]);  
-          // meter.connect(Tone.master,2);
-            //  document.write(Tone.time.toMilliseconds ( ) )
             }
             else {
               activeSynths[k.note].triggerRelease();
@@ -207,18 +178,26 @@ console.clear()
 
 
             
- 
+       
             
-            
-//record the melody------------------------------------------------------------------
-        // var countTimeNum=0;
+//======================= sequencer and record the melody ================================================
+        // sequencer (row1 to row4)
+
+        var noteNames1 = ["Eb1", "F#1", "Bb1", "C2"];
+        var keys1 = new Tone.Players({
+            "Eb1": "toolkit/clap.mp3",
+            "F#1": "toolkit/hihat-closed.mp3",
+            "Bb1": "toolkit/hihat-open.mp3",
+            "C2": "toolkit/snare.mp3",
+        }, {
+            "volume": -10,
+        })
+        keys1.toMaster();
         var note_index = notes_array.length; 
         var loop1 = new Tone.Sequence(
-            function (time, col) {
-           
+            function (time, col) {          
                 var column = document.getElementById("seq1").currentColumn;
-                
-
+              
                 column.forEach(function (val, i) {
                     if (val) {
                       
@@ -226,14 +205,10 @@ console.clear()
                         keys1.get(noteNames1[i]).volume.value=seqVolume.value;
                         keys1.get(noteNames1[i]).start(time, 0, "16n", 0, vel);
                         
-                        
-                        //i: have clicked, need to store
                       
-	
+        // record             
 				notes_array[note_index] = {};
 				notes_array[note_index]["pitch"] = strToMidi[noteNames1[i]];
-       
-     //   TODO use i to caculate time? i is the row but we need column
 
         if(col==0)
         {
@@ -256,8 +231,6 @@ console.clear()
                         col);
                 }, time);
             }, [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15], "16n").start(0);
-
-                // countTimeNum=countTimeNum+0.5;
               
                 predictSeq["notes"]=notes_array;
                 predictSeq["totalTime"]=notes_array.length*0.125;
@@ -265,7 +238,8 @@ console.clear()
  
 
 
-//------------------------------------------------------------------------------
+//-----sequencer (row5 to row 8)------------------------------------------------------------------
+
 
         var keys2 = new Tone.Players({
             "Eb2": "toolKit/ride.mp3",
@@ -286,12 +260,9 @@ console.clear()
                         var vel = 127;
                         keys2.get(noteNames2[i]).start(time, 0, "16n", 0, vel);
 
-
-
+                        // record
                         notes_array[note_index] = {};
-                        notes_array[note_index]["pitch"] = strToMidi[noteNames2[i]];
-                       
-                     //   TODO use i to caculate time? i is the row but we need column
+                        notes_array[note_index]["pitch"] = strToMidi[noteNames2[i]];                              
                 
                         if(col==0)
                         {
@@ -315,7 +286,6 @@ console.clear()
                 }, time);
             }, [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15], "16n").start(0);
 
-            // countTimeNum=countTimeNum+0.5;
               
             predictSeq["notes"]=notes_array;
             predictSeq["totalTime"]=notes_array.length*0.125;
@@ -340,8 +310,7 @@ predict_stepsNumber=pre_stepsNum.value;
                 var continueSeq;
                 var temp;
 
-                //TODO: the predict function. maybe sth wrong with the predictSeq (time is wrong)
-                    autoButton.on('change', function (v) {
+                  autoButton.on('change', function (v) {
                   if (v == 0) {
                   const qns = mm.sequences.quantizeNoteSequence(predictSeq, predict_stepsPerQuarter);
                   continueSeq=improvRNN
@@ -350,19 +319,13 @@ predict_stepsNumber=pre_stepsNum.value;
                     continueSeq.then(
                       (sample)=> {
                   curNotes=sample;
-                  curNotes["totalTime"]=pre_stepsNum.value*0.5;
-                 
-
-              
+                  curNotes["totalTime"]=pre_stepsNum.value*0.5;             
                  rnnPlayer.start(curNotes)
                 })
                 
                 } 
-                  else if (v == -1) {  
-                    // const magentaMIDI= core.sequenceProtoToMidi(curNotes)
-                    // const magentaFile = new Blob([magentaMIDI], { type: 'audio/midi' })
-                    // const magentaURL = URL.createObjectURL(magentaFile);
-              
+                  else if (v == -1) {              
+             
                     rnnPlayer.stop();
                   
                   }
@@ -374,34 +337,28 @@ predict_stepsNumber=pre_stepsNum.value;
                 testPlayer.start(curNotes);  
              
                }  
-               
-                let timerId;
-                test.on('change', function (v) {
-                
-                  if (v == 0 ) {
-           
  
-           
-                    timerId=setInterval(function(){playPredictSeq()},curNotes["notes"].length*0.1*1000 )  
-         
-        
-          }     
+ 
+// loop the predicted sequence
+ let timerId;
+  test.on('change', function (v) {
                 
-                  else{
-                    clearInterval(timerId)
-                  }
-                })
+   if (v == 0 ) {
+          
+      timerId=setInterval(function(){playPredictSeq()},curNotes["notes"].length*0.1*1000 )  
+                
+    }     
+ else{
+      clearInterval(timerId)
+      }
+ })
 
 
 
 
 
-//---------------------------------------------------------------------------
+//--------------------- test the model works. The test sequence is the given example -------------------------
 
-/**
- * 
- * test the model is ok. The test sequence is the given example------------------------------------------------------
- */
                 var example=TWINKLE_TWINKLE;
                 select.on('change',function(v) {
                     if(v.value=="TWINKLE_TWINKLE"){
@@ -449,9 +406,6 @@ predict_stepsNumber=pre_stepsNum.value;
 
 
 
-
-
-
         radiobutton.on('change', function (v) {
             if (v == 0) {
                 Tone.Transport.start();
@@ -486,40 +440,11 @@ predict_stepsNumber=pre_stepsNum.value;
 clean.on('change', function (v) {
   if (v == 0) {
 
-    // loop1(function(time, col) {
-    //   Tone.Draw.schedule(function () {
-    //     document.getElementById("seq1").setAttribute("highlight",
-    //         col+1);
-    // }, time); 
-
-    // })
+  
     location.reload();
-predictSeq={};
-
-// Tone.Draw.schedule(function () {
-//   document.getElementById("seq1").cancel();
-// }, time);
-//setAttribute("style", "background-color:blue;");
-//Tone.Transport.clear()   
+predictSeq={};  
   }
 else
 {}})
 //-----------------------------------------------------------------------------------------------
 
-async function plotSpectra(spectra, channel) {
-  const spectraPlot = mm.tf.tidy(() => {
-  // Slice a single example.
-  let spectraPlot = mm.tf.slice(spectra, [0, 0, 0, channel], [1,
- -1, -1, 1])
-  .reshape([128, 1024]);
-  // Scale to [0, 1].
-  spectraPlot = mm.tf.sub(spectraPlot, mm.tf.min(spectraPlot));
-  spectraPlot = mm.tf.div(spectraPlot, mm.tf.max(spectraPlot));
-  return spectraPlot;
-  });
-  // Plot on canvas.
-  const canvas = document.createElement("canvas");
-  containerPlots.appendChild(canvas);
-  await mm.tf.browser.toPixels(spectraPlot, canvas);
-  spectraPlot.dispose();
- }

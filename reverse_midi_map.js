@@ -1,8 +1,6 @@
 var midiDrums = [39,42,46,36,51,38,50,45,48];
 
-// nums = [60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71]
-// assert.equal(nums.map(note).join(' '), 'C4 Db4 D4 Eb4 E4 F4 Gb4 G4 Ab4 A4 Bb4 B4')
-
+// convert the midi value to the note name (for pinao)
 var piano_MIDI_MAP={
 	"72" : "C5 ",
 	"73" : " Db5",
@@ -21,52 +19,38 @@ var piano_MIDI_MAP={
 
 }
 
+//convert the midi value to note name
 var synthMap = {
 	
 	"66" : "C1",
-	// "37" : "C#4",
 	 "38" : "D1",
 	"39" : "Eb1",
-	// "40" : "E4",
-	// "41" : "F4",
 	"42" : "F#1",
-	// "43" : "G4",
-	// "44" : "G#4",
 	"47" : "B1",
 	"46" : "Bb1",
-	//"47" : "B4",
 	"48" : "C2",
-	//"49" : "C#5",
-	// "80" : "C2",
 	"51": "Eb2",
-	"43":"G1",
-//	"51" : "D#5",
-	
+	"43":"G1",	
 }
 
+
+// convert the note name to the midi value
 var strToMidi={
 
 	"G1":"43",
 	"C1":"66" ,
-	// "37" : "C#4",
 	  "D1":"38", 
 	 "Eb1":"39" ,
-	// "40" : "E4",
-	// "41" : "F4",
 	 "F#1":"42" ,
-	// "43" : "G4",
-	// "44" : "G#4",
 	 "A1":"75" ,
 	"Bb1":"46" ,
-	//"47" : "B4",
 	 "C2":"48" ,
-	//"49" : "C#5",
 	 "D2":"80", 
 	 "Eb2": "51",
 	 "B1":"47",
 }
 
-
+//an example notesequence
 TWINKLE_TWINKLE = {
 	notes: [
 	

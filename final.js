@@ -1,5 +1,4 @@
-//1920x950
-//2400x1218
+
 var bcg,bcg1;
 
 function preload() {
@@ -17,6 +16,7 @@ function setup() {
 
 function draw() {
 	
+	//background
 	 background(bcg4)
 	 game.resize(windowWidth*0.95, windowHeight*0.85)
 	 imageW=game.width;
@@ -26,12 +26,12 @@ function draw() {
 
 	
 	fill(0);
-	
-	// rect(350,350,windowWidth-700,windowHeight-400);
+
 	
 
 }
 
+//====== jump to the guideline page ===========================================
 function jump(){
  window.location.href="guideline.html";
 }
@@ -49,8 +49,11 @@ var jumpButton = new Nexus.TextButton('#jump', {
 		jump();
 	}})
  
+//================================================================================
 
-	//from https://www.programminghunter.com/article/16011806823/
+
+
+//=====================JS page click effects=======================================
 	var a_idx=0;
 jQuery(document).ready(function($){$("body").click(function(e){
         var a=new Array("❤","❤","❤","❤","❤","❤","❤","❤","❤","❤","❤","❤");
